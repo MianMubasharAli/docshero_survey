@@ -1,3 +1,7 @@
+
+import 'dart:convert';
+
+String OptionProduct2ToJson(OptionProduct2 data) => jsonEncode(data.toJson());
 class OptionProduct2 {
   OptionProduct2({
     this.id,
@@ -25,7 +29,7 @@ class OptionProduct2 {
   dynamic? quantity;
   String? tax;
   String? parentId;
-  List<String>? belongsTo;
+  List? belongsTo;
 
   factory OptionProduct2.fromJson(Map<String, dynamic> json) => OptionProduct2(
     id: json["id"],
@@ -54,5 +58,6 @@ class OptionProduct2 {
     "quantity": quantity,
     "tax": tax,
     "parentId": parentId,
+    "belongsTo":belongsTo
   };
 }

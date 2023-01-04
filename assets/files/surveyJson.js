@@ -134,7 +134,7 @@
                               "name": "BS Contract Advanced else",
                               "listingPrice": "4750",
                               "status": "active",
-                              "salePrice": "4750",
+                              "salePrice": "2490",
                               "profit": "1425",
                               "discount": 30,
                               "quantity": 1,
@@ -691,7 +691,7 @@
                   "salePrice": "4750",
                   "profit": "1425",
                   "discount": 30,
-                  "quantity": "=10+$something",
+                  "quantity": 1,
                   "tax": "19",
                   "parentId": "d18a7305-2125-4289-9499-106d13b933de"
                 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:eval_ex/expression.dart';
 import 'package:flutter/material.dart';
 import 'package:function_tree/function_tree.dart';
@@ -182,9 +184,147 @@ class _TypeNumberState extends State<TypeNumber> {
                                 }
                               });
                             });
+                            for(int element in localProductList.toList().reversed){
 
-                            print(localProductList);
-                            print(provider.productList);
+                              localProductListIds.forEach((element2) {
+                                if(provider.productList[element].belongsTo!.contains(element2)){
+                                  int index=provider.productList[element].belongsTo!.indexWhere((element3) {
+                                    return element2==element3;
+                                  });
+                                  provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.forEach((option) {
+                                    if(option.id == element2){
+                                      option.products?.forEach((product) {
+                                        if(provider.productList[element].id == product.id){
+
+                                          provider.productList[element].quantity=provider.productList[element].quantity - product.quantity;
+                                          provider.productList[element].salePrice=(provider.productList[element].quantity * int.parse(product.salePrice.toString())).toString();
+                                        }
+                                      });
+                                    }
+                                  });
+                                  provider.productList[element].belongsTo?.removeAt(index);
+                                }
+                              });
+                              if(provider.productList[element].quantity == 0){
+                                provider.productList.removeAt(element);
+                              }
+                            }
+                          }
+
+                          provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.conditionsForProductSelection?.forEach((element) {
+                            String? discount=element.discount;
+                            String? condition="";
+                            List<String> conditionList=[];
+                            int checkIndexForConditionString=0;
+                            element.options?.forEach((element2) {
+                              checkIndexForConditionString++;
+                              conditionList.add("(${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options?[widget.index].value} "
+                                  "${element2.condition} ${element2.value}) ${ checkIndexForConditionString < element.options!.length ? element.options![checkIndexForConditionString].optionOperator : ""}");
+                            });
+
+                            condition=conditionList.join(" ");
+                            Expression exp = Expression(condition);
+                            print(exp.eval().toString());
+
+                            // element.options?.forEach((element2) {
+                            //   if(element2.option?.id==provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options?[widget.index].id){
+                            //     String? condition=element2.condition;
+                            //     String? operator=element2.optionOperator;
+                            //     String? value=element2.value;
+                            if(exp.eval().toString() == "1"){
+                              element.products?.forEach((element3) {
+                                bool checkExistenceOfProduct=false;
+                                int? matchingIndex;
+                                // print(provider.productList.length);
+                                for(int j=0;j< provider.productList.length; j++){
+                                  if(provider.productList[j].id == element3.id){
+                                    checkExistenceOfProduct=true;
+                                    matchingIndex=j;
+                                  }
+                                }
+
+                                if(checkExistenceOfProduct == true){
+                                  int index= provider.productList.indexWhere((element4) {
+                                    return element4.id == element3.id;
+                                  });
+
+                                  var encodedFoundProduct=jsonEncode(provider.productList[index]);
+                                  Map<String, dynamic> decodedFoundProduct=jsonDecode(encodedFoundProduct) as Map<String, dynamic>;
+                                  OptionProduct2 foundProduct=OptionProduct2.fromJson(decodedFoundProduct);
+
+                                  bool? isContains=foundProduct.belongsTo?.contains(element.id);
+                                  if(!isContains!){
+                                    foundProduct.belongsTo?.add(element.id!);
+                                  }
+                                  List? belong=foundProduct.belongsTo;
+                                  var unique=belong?.toSet().toList();
+                                  foundProduct.belongsTo=unique;
+                                  foundProduct.quantity=foundProduct.quantity + element3.quantity;
+                                  foundProduct.salePrice= (foundProduct.quantity * int.parse(element3.salePrice.toString())  -
+                                      (foundProduct.quantity *
+                                          int.parse(element3.salePrice.toString()) *
+                                          int.parse(discount.toString())) / 100).toString();
+                                  print(foundProduct.salePrice);
+                                  if(exp.eval().toString() == "1"){
+                                    provider.productList[index]=foundProduct;
+                                  }
+                                }else{
+                                  OptionProduct2 product=element3;
+                                  var encoded=jsonEncode(product);
+                                  Map<String, dynamic> decoded=jsonDecode(encoded) as Map<String, dynamic>;
+                                  OptionProduct2 modifiedProduct=OptionProduct2.fromJson(decoded);
+                                  modifiedProduct.belongsTo?.add(element.id!);
+                                  modifiedProduct.belongsTo?.toSet().toList();
+                                  if(exp.eval().toString() == "1"){
+                                    provider.productList.add(modifiedProduct);
+                                  }
+
+                                }
+
+                              });
+                            }
+                            // }
+                            // });
+                          });
+                        }
+                      }else{
+                        if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString())
+                            > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].min.toString())){
+
+                          setState(() {
+                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
+                            =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
+                                - int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()));
+                          });
+
+                          if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value != 0){
+                            localProductList=new Set();
+                            localProductListIds=new Set();
+
+                            provider.productList.forEach((element) {
+                              element.belongsTo?.forEach((element2) {
+                                provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.conditionsForProductSelection?.forEach((element3) {
+                                  String? discount=element3.discount;
+                                  element3.options?.forEach((element4) {
+                                    String? condition=element4.condition;
+                                    String? operator=element4.optionOperator;
+                                    String? value=element4.value;
+                                    if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString() !=  value){
+                                      if(element2 == element3.id){
+                                        int index=provider.productList.indexWhere((element2) {
+                                          return element.id==element2.id;
+                                        });
+                                        if(index != null){
+                                          localProductList.add(index);
+                                          localProductListIds.add(element2);
+                                        }
+                                      }
+                                    }
+                                  });
+                                });
+                              });
+                            });
+
                             for(var element in localProductList.toList().reversed){
                               if( provider.productList[element].quantity > 1){
                                 provider.productList[element].quantity=provider.productList[element].quantity - 1;
@@ -202,64 +342,6 @@ class _TypeNumberState extends State<TypeNumber> {
                             }
                           }
 
-                          provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.conditionsForProductSelection?.forEach((element) {
-                            String? discount=element.discount;
-                            element.options?.forEach((element2) {
-                              if(element2.option?.id==provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options?[widget.index].id){
-                                String? condition=element2.condition;
-                                String? operator=element2.optionOperator;
-                                String? value=element2.value;
-
-                                if(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString() == value){
-                                  element.products?.forEach((element3) {
-                                    bool checkExistenceOfProduct=false;
-                                    int? matchingIndex;
-                                    // print(provider.productList.length);
-                                    for(int j=0;j< provider.productList.length; j++){
-                                      if(provider.productList[j].id == element3.id){
-                                        checkExistenceOfProduct=true;
-                                        matchingIndex=j;
-                                      }
-                                    }
-
-                                    if(checkExistenceOfProduct == true){
-                                      int index= provider.productList.indexWhere((element4) {
-                                        return element4.id == element3.id;
-                                      });
-                                      OptionProduct2 foundProduct=provider.productList[index];
-                                      bool? isContains=foundProduct.belongsTo?.contains(element.id);
-                                      if(!isContains!){
-                                        foundProduct.belongsTo?.add(element.id!);
-                                      }
-                                      foundProduct.quantity=foundProduct.quantity + element3.quantity;
-                                      if(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString() == value){
-                                        provider.productList[index]=foundProduct;
-                                      }
-                                    }else{
-                                      OptionProduct2 product=element3;
-                                      OptionProduct2 modifiedProduct=product;
-                                      modifiedProduct.belongsTo?.add(element.id!);
-                                      if(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString() == value){
-                                        provider.productList.add(modifiedProduct);
-                                      }
-
-                                    }
-
-                                  });
-                                }
-                              }
-                            });
-                          });
-                        }
-                      }else{
-                        if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString())
-                            > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].min.toString())){
-
-                          setState(() {
-                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
-                            =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
-                                - int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()));
-                          });
                           if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value == 0){
                             provider.productList.forEach((element) { //cart products
                               //selected option
@@ -287,23 +369,102 @@ class _TypeNumberState extends State<TypeNumber> {
                               });
 
                             });
-                            for(var element in localProductList.toList().reversed){
-                              if( provider.productList[element].quantity > 1){
-                                provider.productList[element].quantity=provider.productList[element].quantity - 1;
-                                localProductListIds.forEach((element2) {
-                                  if(provider.productList[element].belongsTo!.contains(element2)){
-                                    int index=provider.productList[element].belongsTo!.indexWhere((element3) {
-                                      return element2==element3;
-                                    });
-                                    provider.productList[element].belongsTo?.removeAt(index);
-                                  }
-                                });
-                              }else{
+                            for(int element in localProductList.toList().reversed){
+
+                              localProductListIds.forEach((element2) {
+                                if(provider.productList[element].belongsTo!.contains(element2)){
+                                  int index=provider.productList[element].belongsTo!.indexWhere((element3) {
+                                    return element2==element3;
+                                  });
+                                  provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options!.forEach((option) {
+                                    if(option.id == element2){
+                                      option.products?.forEach((product) {
+                                        if(provider.productList[element].id == product.id){
+
+                                          provider.productList[element].quantity=provider.productList[element].quantity - product.quantity;
+                                          provider.productList[element].salePrice=(provider.productList[element].quantity * int.parse(product.salePrice.toString())).toString();
+                                        }
+                                      });
+                                    }
+                                  });
+                                  provider.productList[element].belongsTo?.removeAt(index);
+                                }
+                              });
+                              if(provider.productList[element].quantity == 0){
                                 provider.productList.removeAt(element);
                               }
                             }
                           }
 
+                          provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.conditionsForProductSelection?.forEach((element) {
+                            String? discount=element.discount;
+                            String? condition="";
+                            List<String> conditionList=[];
+                            int checkIndexForConditionString=0;
+                            element.options?.forEach((element2) {
+                              checkIndexForConditionString++;
+                              conditionList.add("(${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options?[widget.index].value} "
+                                  "${element2.condition} ${element2.value}) ${ checkIndexForConditionString < element.options!.length ? element.options![checkIndexForConditionString].optionOperator : ""}");
+                            });
+
+                            condition=conditionList.join(" ");
+                            Expression exp = Expression(condition);
+                            print(exp.eval().toString());
+
+                            // element.options?.forEach((element2) {
+                            //   if(element2.option?.id==provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options?[widget.index].id){
+                            //     String? condition=element2.condition;
+                            //     String? operator=element2.optionOperator;
+                            //     String? value=element2.value;
+                            if(exp.eval().toString() == "1"){
+                              element.products?.forEach((element3) {
+                                bool checkExistenceOfProduct=false;
+                                int? matchingIndex;
+                                // print(provider.productList.length);
+                                for(int j=0;j< provider.productList.length; j++){
+                                  if(provider.productList[j].id == element3.id){
+                                    checkExistenceOfProduct=true;
+                                    matchingIndex=j;
+                                  }
+                                }
+
+                                if(checkExistenceOfProduct == true){
+                                  int index= provider.productList.indexWhere((element4) {
+                                    return element4.id == element3.id;
+                                  });
+                                  OptionProduct2 foundProduct=provider.productList[index];
+                                  bool? isContains=foundProduct.belongsTo?.contains(element.id);
+                                  if(!isContains!){
+                                    foundProduct.belongsTo?.add(element.id!);
+                                  }
+                                  List? belong=foundProduct.belongsTo;
+                                  var unique=belong?.toSet().toList();
+                                  foundProduct.belongsTo=unique;
+                                  foundProduct.quantity=foundProduct.quantity + element3.quantity;
+                                  foundProduct.salePrice= (foundProduct.quantity * int.parse(element3.salePrice.toString())  -
+                                      (foundProduct.quantity *
+                                          int.parse(element3.salePrice.toString()) *
+                                          int.parse(discount.toString())) / 100).toString();
+                                  print(foundProduct.salePrice);
+                                  if(exp.eval().toString() == "1"){
+                                    provider.productList[index]=foundProduct;
+                                  }
+                                }else{
+                                  OptionProduct2 product=element3;
+                                  OptionProduct2 modifiedProduct=product;
+                                  modifiedProduct.belongsTo?.add(element.id!);
+                                  modifiedProduct.belongsTo?.toSet().toList();
+                                  if(exp.eval().toString() == "1"){
+                                    provider.productList.add(modifiedProduct);
+                                  }
+
+                                }
+
+                              });
+                            }
+                            // }
+                            // });
+                          });
                         }
                       }
                       setState(() {
@@ -333,7 +494,11 @@ class _TypeNumberState extends State<TypeNumber> {
                                   int index= provider.productList.indexWhere((element) {
                                     return element.id==provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].products![i].id;
                                   });
-                                  OptionProduct2 foundProduct=provider.productList[index];
+
+                                  var encodedFoundProduct=jsonEncode(provider.productList[index]);
+                                  Map<String, dynamic> decodedFoundProduct=jsonDecode(encodedFoundProduct) as Map<String, dynamic>;
+                                  OptionProduct2 foundProduct=OptionProduct2.fromJson(decodedFoundProduct);
+
                                   bool? isContains=foundProduct.belongsTo?.contains(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id!);
                                   if(!isContains!){
                                     foundProduct.belongsTo?.add(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id!);
@@ -345,7 +510,9 @@ class _TypeNumberState extends State<TypeNumber> {
                                   // provider.productList[matchingIndex!].quantity=provider.productList[matchingIndex].quantity + 1;
                                 }else{
                                   OptionProduct2 product=provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].products![i];
-                                  OptionProduct2 modifiedProduct=product;
+                                  var encoded=jsonEncode(product);
+                                  Map<String, dynamic> decoded=jsonDecode(encoded) as Map<String, dynamic>;
+                                  OptionProduct2 modifiedProduct=OptionProduct2.fromJson(decoded);
                                   modifiedProduct.belongsTo?.add(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id!);
                                   provider.productList.add(modifiedProduct);
                                 }
@@ -423,9 +590,6 @@ class _TypeNumberState extends State<TypeNumber> {
                               //     String? condition=element2.condition;
                               //     String? operator=element2.optionOperator;
                               //     String? value=element2.value;
-
-
-
                                   if(exp.eval().toString() == "1"){
                                     element.products?.forEach((element3) {
                                       bool checkExistenceOfProduct=false;
@@ -447,7 +611,7 @@ class _TypeNumberState extends State<TypeNumber> {
                                         if(!isContains!){
                                           foundProduct.belongsTo?.add(element.id!);
                                         }
-                                        List<String>? belong=foundProduct.belongsTo;
+                                        List? belong=foundProduct.belongsTo;
                                         var unique=belong?.toSet().toList();
                                         foundProduct.belongsTo=unique;
                                         foundProduct.quantity=foundProduct.quantity + element3.quantity;
@@ -480,7 +644,11 @@ class _TypeNumberState extends State<TypeNumber> {
                       }else{
                         if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString())
                             < int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].max.toString())){
+
+
                           if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value == 0){
+                            localProductList=new Set();
+                            localProductListIds= new Set();
                             for(int i=0; i<provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].products!.length ; i++){
                               bool checkExistenceOfProduct=false;
                               int? matchingIndex;
@@ -495,18 +663,25 @@ class _TypeNumberState extends State<TypeNumber> {
                                 int index= provider.productList.indexWhere((element) {
                                   return element.id==provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].products![i].id;
                                 });
-                                OptionProduct2 foundProduct=provider.productList[index];
+
+                                var encodedFoundProduct=jsonEncode(provider.productList[index]);
+                                Map<String, dynamic> decodedFoundProduct=jsonDecode(encodedFoundProduct) as Map<String, dynamic>;
+                                OptionProduct2 foundProduct=OptionProduct2.fromJson(decodedFoundProduct);
+
                                 bool? isContains=foundProduct.belongsTo?.contains(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id!);
                                 if(!isContains!){
                                   foundProduct.belongsTo?.add(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id!);
                                 }
                                 foundProduct.quantity=foundProduct.quantity + provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].products![i].quantity;
+                                foundProduct.salePrice=(foundProduct.quantity * int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].products![i].salePrice.toString())).toString();
                                 provider.productList[index]=foundProduct;
 
                                 // provider.productList[matchingIndex!].quantity=provider.productList[matchingIndex].quantity + 1;
                               }else{
                                 OptionProduct2 product=provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].products![i];
-                                OptionProduct2 modifiedProduct=product;
+                                var encoded=jsonEncode(product);
+                                Map<String, dynamic> decoded=jsonDecode(encoded) as Map<String, dynamic>;
+                                OptionProduct2 modifiedProduct=OptionProduct2.fromJson(decoded);
                                 modifiedProduct.belongsTo?.add(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id!);
                                 provider.productList.add(modifiedProduct);
 
@@ -518,6 +693,121 @@ class _TypeNumberState extends State<TypeNumber> {
                             provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
                             =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
                                 + int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()));
+                          });
+
+                          if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value != 0){
+                            localProductListIds=new Set();
+                            localProductList= new Set();
+
+                            provider.productList.forEach((element) {
+                              element.belongsTo?.forEach((element2) {
+                                provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.conditionsForProductSelection?.forEach((element3) {
+                                  String? discount=element3.discount;
+                                  element3.options?.forEach((element4) {
+                                    String? condition=element4.condition;
+                                    String? operator=element4.optionOperator;
+                                    String? value=element4.value;
+                                    if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString() !=  value){
+                                      if(element2 == element3.id){
+                                        int index=provider.productList.indexWhere((element2) {
+                                          return element.id==element2.id;
+                                        });
+                                        if(index != null){
+                                          localProductList.add(index);
+                                          localProductListIds.add(element2);
+                                        }
+                                      }
+                                    }
+                                  });
+                                });
+                              });
+                            });
+
+                            for(var element in localProductList.toList().reversed){
+                              if( provider.productList[element].quantity > 1){
+                                provider.productList[element].quantity=provider.productList[element].quantity - 1;
+                                localProductListIds.forEach((element2) {
+                                  if(provider.productList[element].belongsTo!.contains(element2)){
+                                    int index=provider.productList[element].belongsTo!.indexWhere((element3) {
+                                      return element2==element3;
+                                    });
+                                    provider.productList[element].belongsTo?.removeAt(index);
+                                  }
+                                });
+                              }else{
+                                provider.productList.removeAt(element);
+                              }
+                            }
+                          }
+
+                          provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.conditionsForProductSelection?.forEach((element) {
+                            String? discount=element.discount;
+                            String? condition="";
+                            List<String> conditionList=[];
+                            int checkIndexForConditionString=0;
+                            element.options?.forEach((element2) {
+                              checkIndexForConditionString++;
+                              conditionList.add("(${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options?[widget.index].value} "
+                                  "${element2.condition} ${element2.value}) ${ checkIndexForConditionString < element.options!.length ? element.options![checkIndexForConditionString].optionOperator : ""}");
+                            });
+
+                            condition=conditionList.join(" ");
+                            Expression exp = Expression(condition);
+                            print(exp.eval().toString());
+
+                            // element.options?.forEach((element2) {
+                            //   if(element2.option?.id==provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options?[widget.index].id){
+                            //     String? condition=element2.condition;
+                            //     String? operator=element2.optionOperator;
+                            //     String? value=element2.value;
+                            if(exp.eval().toString() == "1"){
+                              element.products?.forEach((element3) {
+                                bool checkExistenceOfProduct=false;
+                                int? matchingIndex;
+                                // print(provider.productList.length);
+                                for(int j=0;j< provider.productList.length; j++){
+                                  if(provider.productList[j].id == element3.id){
+                                    checkExistenceOfProduct=true;
+                                    matchingIndex=j;
+                                  }
+                                }
+
+                                if(checkExistenceOfProduct == true){
+                                  int index= provider.productList.indexWhere((element4) {
+                                    return element4.id == element3.id;
+                                  });
+                                  OptionProduct2 foundProduct=provider.productList[index];
+                                  bool? isContains=foundProduct.belongsTo?.contains(element.id);
+                                  if(!isContains!){
+                                    foundProduct.belongsTo?.add(element.id!);
+                                  }
+                                  List? belong=foundProduct.belongsTo;
+                                  var unique=belong?.toSet().toList();
+                                  foundProduct.belongsTo=unique;
+                                  foundProduct.quantity=foundProduct.quantity + element3.quantity;
+                                  foundProduct.salePrice= (foundProduct.quantity * int.parse(element3.salePrice.toString())  -
+                                      (foundProduct.quantity *
+                                          int.parse(element3.salePrice.toString()) *
+                                          int.parse(discount.toString())) / 100).toString();
+                                  print(foundProduct.salePrice);
+                                  if(exp.eval().toString() == "1"){
+                                    provider.productList[index]=foundProduct;
+                                  }
+                                }else{
+                                  OptionProduct2 product=element3;
+                                  OptionProduct2 modifiedProduct=product;
+                                  modifiedProduct.belongsTo?.add(element.id!);
+                                  modifiedProduct.belongsTo?.toSet().toList();
+                                  if(exp.eval().toString() == "1"){
+                                    provider.productList.add(modifiedProduct);
+                                  }
+
+                                }
+
+                              });
+                            }
+                            // }
+                            // });
                           });
 
                         }
