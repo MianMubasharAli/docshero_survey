@@ -34,8 +34,8 @@ class _TypeSingleState extends State<TypeSingle> {
               dense: true,
               title:
               provider.surveyModel?.steps?[provider.questionsIndex].type == "question" ?
-              Text("${provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].title}") :
-              Text("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].title}"),
+              Text("${provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].title}",style: TextStyle(fontSize: size.width * 0.05),) :
+              Text("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].title}",style: TextStyle(fontSize: size.width * 0.05)),
               value:
               provider.surveyModel?.steps?[provider.questionsIndex].type == "question" ?
               provider.surveyModel?.steps![provider.questionsIndex].value?.configuration?.options![widget.index].id :
@@ -48,20 +48,6 @@ class _TypeSingleState extends State<TypeSingle> {
                   provider.productList.forEach((element) {//cart products
                     //selected option
                     element.belongsTo?.forEach((element2) {
-                      // provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.forEach((element3) {
-                      //   if(element2 != element3.id){
-                      //     element3.products?.forEach((element4) {
-                      //       if(element.id == element4.id){
-                      //         int index=provider.productList.indexWhere((element2) {
-                      //
-                      //           return element.id==element2.id;
-                      //         });
-                      //         localProductList.add(index);
-                      //         localProductListIds.add(element2);
-                      //       }
-                      //     });
-                      //   }
-                      // });
                       if(element2 != provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id ){
 
                         for(int i=0; i < provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.length ; i++){
@@ -81,18 +67,8 @@ class _TypeSingleState extends State<TypeSingle> {
                             }
                           }
                         }
-                        // int index=provider.productList.indexWhere((element2) {
-                        //
-                        //   return element.id==element2.id;
-                        // });
-                        // if(index != null){
-                        //   localProductList.add(index);
-                        //   // localProductListIds.add(element2);
-                        // }
-
                       }
                     });
-
                   });
                   for(int element in localProductList.toList().reversed){
 
@@ -144,6 +120,8 @@ class _TypeSingleState extends State<TypeSingle> {
                       foundProduct.belongsTo?.add(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id!);
                     }
                     foundProduct.quantity=foundProduct.quantity + provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].products![i].quantity;
+
+
                     foundProduct.salePrice= (int.parse(foundProduct.quantity.toString()) *
                         int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].products![i].salePrice.toString())).toString();
                     provider.productList[index]=foundProduct;
@@ -264,159 +242,150 @@ class _TypeSingleState extends State<TypeSingle> {
     );
   }
 
-  calculations2(int index){
-    DataProvider provider=Provider.of<DataProvider>(context,listen: false);
-    provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.forEach((option) {
-      List<OptionProduct2>? selectedProducts = option.products;
-      if(option.id == provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![index].id){
-        selectedProducts?.forEach((product) {
-          var parsedQuantity = product.quantity;
+  // calculations2(int index){
+  //   DataProvider provider=Provider.of<DataProvider>(context,listen: false);
+  //   provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.forEach((option) {
+  //     List<OptionProduct2>? selectedProducts = option.products;
+  //     if(option.id == provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![index].id){
+  //       selectedProducts?.forEach((product) {
+  //         var parsedQuantity = product.quantity;
+  //
+  //         if(provider.productList.any((cp) => cp.id == product.id)){
+  //           int foundProductIndex = provider.productList.indexWhere((selectedProduct) {
+  //             return selectedProduct.id == product.id;
+  //           });
+  //           OptionProduct2 foundProduct= provider.productList[foundProductIndex];
+  //           foundProduct.quantity= parsedQuantity;
+  //           foundProduct.belongsTo?.forEach((optionId) {
+  //             if(optionId != option.id){
+  //               Option2 foundOption= provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.firstWhere((op) {
+  //                 return op.id == optionId;
+  //               });
+  //               OptionProduct2? foundProductOther = foundOption.products!.firstWhere((pr) {
+  //                 return pr.id == product.id;
+  //               });
+  //
+  //               var parsedQuantityFoundProduct= foundProductOther.quantity;
+  //
+  //               foundProduct.quantity = foundProduct.quantity + parsedQuantityFoundProduct;
+  //             }
+  //           });
+  //           foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
+  //           foundProduct.belongsTo?.add(option.id!);
+  //           Set uniqueSet= foundProduct.belongsTo!.toSet();
+  //           List uniqueItems= uniqueSet.toList();
+  //           foundProduct.belongsTo=uniqueItems;
+  //           provider.productList[foundProductIndex]=foundProduct;
+  //         }else{
+  //           OptionProduct2 cartProduct=product;
+  //           cartProduct.belongsTo=[option.id!];
+  //           cartProduct.salePrice = (parsedQuantity * int.parse(product.salePrice.toString())).toString();
+  //           provider.productList.add(cartProduct);
+  //         }
+  //       });
+  //     } else {
+  //       selectedProducts?.forEach((product) {
+  //         var parsedQuantity= product.quantity;
+  //         int foundProdcutIndex= provider.productList.indexWhere((selectedProduct) {
+  //           return selectedProduct.id == product.id;
+  //         });
+  //         if(foundProdcutIndex == -1) return;
+  //         OptionProduct2 foundProduct= provider.productList[foundProdcutIndex];
+  //         if(foundProduct.belongsTo!.contains(option.id)){
+  //           foundProduct.quantity = foundProduct.quantity - parsedQuantity;
+  //           foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
+  //           foundProduct.belongsTo = foundProduct.belongsTo?.where((id) {
+  //             return id != option.id;
+  //           }).toList();
+  //           if(foundProduct.belongsTo?.length == 0){
+  //             provider.productList.removeAt(foundProdcutIndex);
+  //           }else{
+  //             provider.productList[foundProdcutIndex]=foundProduct;
+  //           }
+  //
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  // calculations(int index){
+  //   DataProvider provider=Provider.of<DataProvider>(context,listen: false);
+  //   provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.forEach((option) {
+  //     List<OptionProduct2>? selectedProducts = [...?option.products];
+  //     if(option.id == provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![index].id){
+  //       selectedProducts.forEach((product) {
+  //         var parsedQuantity = product.quantity;
+  //
+  //           if(provider.productList.any((cp) => cp.id == product.id)){
+  //             int foundProductIndex = provider.productList.indexWhere((selectedProduct) {
+  //               return selectedProduct.id == product.id;
+  //             });
+  //             OptionProduct2 foundProduct=OptionProduct2.fromJson(jsonDecode(OptionProduct2ToJson(provider.productList[foundProductIndex])));
+  //
+  //             foundProduct.quantity= parsedQuantity;
+  //             foundProduct.belongsTo?.forEach((optionId) {
+  //               if(optionId != option.id){
+  //                 Option2? foundOption= provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.firstWhereOrNull((op) => op.id == optionId );
+  //                 ConditionsForProductSelection? foundOption2;
+  //                 if(foundOption == null){
+  //                   foundOption2=provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.conditionsForProductSelection!.firstWhereOrNull((cond) => cond.id == optionId );
+  //                 }
+  //                 OptionProduct2? foundProductOther = foundOption != null ? foundOption.products!.firstWhere((pr) {
+  //                   return pr.id == product.id;
+  //                 })
+  //
+  //                 :
+  //                     foundOption2 != null ? foundOption2.products!.firstWhere((pr) {
+  //                       return pr.id == product.id;
+  //                     })
+  //                 :
+  //                 null;
+  //
+  //                 if(foundProductOther != null){
+  //                   var parsedQuantityFoundProduct= foundProductOther.quantity;
+  //                   foundProduct.quantity = foundProduct.quantity + parsedQuantityFoundProduct;
+  //                 }
+  //                }
+  //             });
+  //             foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
+  //             foundProduct.belongsTo?.add(option.id!);
+  //             Set uniqueSet= foundProduct.belongsTo!.toSet();
+  //             List uniqueItems= uniqueSet.toList();
+  //             foundProduct.belongsTo=uniqueItems;
+  //             provider.productList[foundProductIndex]=foundProduct;
+  //           }else{
+  //             OptionProduct2 cartProduct=OptionProduct2.fromJson(jsonDecode(OptionProduct2ToJson(product)) ) ;
+  //             cartProduct.belongsTo=[option.id!];
+  //             cartProduct.salePrice = (parsedQuantity * int.parse(product.salePrice.toString())).toString();
+  //             provider.productList.add(cartProduct);
+  //           }
+  //
+  //       });
+  //     } else {
+  //       selectedProducts.forEach((product) {
+  //         var parsedQuantity= product.quantity;
+  //         int foundProdcutIndex= provider.productList.indexWhere((selectedProduct) {
+  //           return selectedProduct.id == product.id;
+  //         });
+  //         if(foundProdcutIndex == -1) return;
+  //         OptionProduct2 foundProduct= OptionProduct2.fromJson(jsonDecode(OptionProduct2ToJson(provider.productList[foundProdcutIndex])) as Map<String, dynamic>);
+  //         if(foundProduct.belongsTo!.contains(option.id)){
+  //           foundProduct.quantity = foundProduct.quantity - parsedQuantity;
+  //           foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
+  //           foundProduct.belongsTo = foundProduct.belongsTo?.where((id) {
+  //             return id != option.id;
+  //           }).toList();
+  //           if(foundProduct.belongsTo?.length == 0){
+  //             provider.productList.removeAt(foundProdcutIndex);
+  //           }else{
+  //             provider.productList[foundProdcutIndex]=foundProduct;
+  //           }
+  //
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
-          if(provider.productList.any((cp) => cp.id == product.id)){
-            int foundProductIndex = provider.productList.indexWhere((selectedProduct) {
-              return selectedProduct.id == product.id;
-            });
-            OptionProduct2 foundProduct= provider.productList[foundProductIndex];
-            foundProduct.quantity= parsedQuantity;
-            foundProduct.belongsTo?.forEach((optionId) {
-              if(optionId != option.id){
-                Option2 foundOption= provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.firstWhere((op) {
-                  return op.id == optionId;
-                });
-                OptionProduct2? foundProductOther = foundOption.products!.firstWhere((pr) {
-                  return pr.id == product.id;
-                });
 
-                var parsedQuantityFoundProduct= foundProductOther.quantity;
-
-                foundProduct.quantity = foundProduct.quantity + parsedQuantityFoundProduct;
-              }
-            });
-            foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
-            foundProduct.belongsTo?.add(option.id!);
-            Set uniqueSet= foundProduct.belongsTo!.toSet();
-            List uniqueItems= uniqueSet.toList();
-            foundProduct.belongsTo=uniqueItems;
-            provider.productList[foundProductIndex]=foundProduct;
-          }else{
-            OptionProduct2 cartProduct=product;
-            cartProduct.belongsTo=[option.id!];
-            cartProduct.salePrice = (parsedQuantity * int.parse(product.salePrice.toString())).toString();
-            provider.productList.add(cartProduct);
-          }
-        });
-      } else {
-        selectedProducts?.forEach((product) {
-          var parsedQuantity= product.quantity;
-          int foundProdcutIndex= provider.productList.indexWhere((selectedProduct) {
-            return selectedProduct.id == product.id;
-          });
-          if(foundProdcutIndex == -1) return;
-          OptionProduct2 foundProduct= provider.productList[foundProdcutIndex];
-          if(foundProduct.belongsTo!.contains(option.id)){
-            foundProduct.quantity = foundProduct.quantity - parsedQuantity;
-            foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
-            foundProduct.belongsTo = foundProduct.belongsTo?.where((id) {
-              return id != option.id;
-            }).toList();
-            if(foundProduct.belongsTo?.length == 0){
-              provider.productList.removeAt(foundProdcutIndex);
-            }else{
-              provider.productList[foundProdcutIndex]=foundProduct;
-            }
-
-          }
-        });
-      }
-    });
-  }
-  calculations(int index){
-    DataProvider provider=Provider.of<DataProvider>(context,listen: false);
-    provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.forEach((option) {
-      List<OptionProduct2>? selectedProducts = [...?option.products];
-      if(option.id == provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![index].id){
-        selectedProducts.forEach((product) {
-          var parsedQuantity = product.quantity;
-
-            if(provider.productList.any((cp) => cp.id == product.id)){
-              int foundProductIndex = provider.productList.indexWhere((selectedProduct) {
-                return selectedProduct.id == product.id;
-              });
-              OptionProduct2 foundProduct=OptionProduct2.fromJson(jsonDecode(OptionProduct2ToJson(provider.productList[foundProductIndex])));
-
-              foundProduct.quantity= parsedQuantity;
-              foundProduct.belongsTo?.forEach((optionId) {
-                if(optionId != option.id){
-                  Option2? foundOption= provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options!.firstWhereOrNull((op) => op.id == optionId );
-                  ConditionsForProductSelection? foundOption2;
-                  if(foundOption == null){
-                    foundOption2=provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.conditionsForProductSelection!.firstWhereOrNull((cond) => cond.id == optionId );
-                  }
-                  OptionProduct2? foundProductOther = foundOption != null ? foundOption.products!.firstWhere((pr) {
-                    return pr.id == product.id;
-                  })
-
-                  :
-                      foundOption2 != null ? foundOption2.products!.firstWhere((pr) {
-                        return pr.id == product.id;
-                      })
-                  :
-                  null;
-
-                  if(foundProductOther != null){
-                    var parsedQuantityFoundProduct= foundProductOther.quantity;
-                    foundProduct.quantity = foundProduct.quantity + parsedQuantityFoundProduct;
-                  }
-                 }
-              });
-              foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
-              foundProduct.belongsTo?.add(option.id!);
-              Set uniqueSet= foundProduct.belongsTo!.toSet();
-              List uniqueItems= uniqueSet.toList();
-              foundProduct.belongsTo=uniqueItems;
-              provider.productList[foundProductIndex]=foundProduct;
-            }else{
-              OptionProduct2 cartProduct=OptionProduct2.fromJson(jsonDecode(OptionProduct2ToJson(product)) ) ;
-              cartProduct.belongsTo=[option.id!];
-              cartProduct.salePrice = (parsedQuantity * int.parse(product.salePrice.toString())).toString();
-              provider.productList.add(cartProduct);
-            }
-
-        });
-      } else {
-        selectedProducts.forEach((product) {
-          var parsedQuantity= product.quantity;
-          int foundProdcutIndex= provider.productList.indexWhere((selectedProduct) {
-            return selectedProduct.id == product.id;
-          });
-          if(foundProdcutIndex == -1) return;
-          OptionProduct2 foundProduct= OptionProduct2.fromJson(jsonDecode(OptionProduct2ToJson(provider.productList[foundProdcutIndex])) as Map<String, dynamic>);
-          if(foundProduct.belongsTo!.contains(option.id)){
-            foundProduct.quantity = foundProduct.quantity - parsedQuantity;
-            foundProduct.salePrice = (foundProduct.quantity * int.parse(product.salePrice.toString())).toString();
-            foundProduct.belongsTo = foundProduct.belongsTo?.where((id) {
-              return id != option.id;
-            }).toList();
-            if(foundProduct.belongsTo?.length == 0){
-              provider.productList.removeAt(foundProdcutIndex);
-            }else{
-              provider.productList[foundProdcutIndex]=foundProduct;
-            }
-
-          }
-        });
-      }
-    });
-  }
-  checkForFormula(formula){
-
-  }
-  bool isJson(value){
-    try{
-      jsonDecode(value);
-      return true;
-    }catch(e){
-      return false;
-    }
-  }
 }

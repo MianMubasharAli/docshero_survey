@@ -42,7 +42,7 @@ class _QuestionsState extends State<Questions> {
               Container(
                 width:size.width,
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.015,bottom: size.height * 0.015),
                 decoration: BoxDecoration(
                     color: kBlueColor,
                     borderRadius: BorderRadius.circular(10)
@@ -52,13 +52,16 @@ class _QuestionsState extends State<Questions> {
               provider.surveyModel?.steps?[provider.questionsIndex].type == "question" ?
               Container(
                 width: size.width,
-                padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.02,bottom: size.height * 0.02),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.text}",color: kBlackColor,fontWeight: FontWeight.bold),
+                    textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.text}",
+                        color: kBlackColor,
+                        fontWeight: FontWeight.bold,
+                        size: size.width * 0.08),
                     textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.description}",
-                        fontWeight: FontWeight.normal,color: kBlackColor),
+                        fontWeight: FontWeight.normal,color: kBlackColor,size: size.width * 0.06),
 
                     ListView.builder(
                         shrinkWrap:true,
@@ -95,7 +98,7 @@ class _QuestionsState extends State<Questions> {
                   children: [
                     Container(
                       width: size.width,
-                      padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                      padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.02,bottom: size.height * 0.02    ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

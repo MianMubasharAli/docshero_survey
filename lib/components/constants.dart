@@ -7,7 +7,7 @@ const Color kBlackColor=Colors.black;
 const Color kyellowColor=Colors.yellow;
 const Color kBlueColor=Colors.blue;
 const Color kGreenColor= Colors.green;
-const Color kOrangeColor= Colors.orange;
+const Color kOrangeColor= Color(0xfff0750f);
 
 Text largerText(String text,{Color color=kWhiteColor,double size=32,FontWeight fontWeight=FontWeight.w600,TextOverflow textOverflow=TextOverflow.ellipsis }){
   return Text(text,style: TextStyle(color: color,fontSize: size,fontWeight: fontWeight,),overflow: textOverflow,);

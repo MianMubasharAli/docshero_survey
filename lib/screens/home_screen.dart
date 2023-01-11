@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    var size=MediaQuery.of(context).size;
     return SafeArea(
         child: DefaultTabController(
           length: 3,
@@ -39,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
             resizeToAvoidBottomInset: false,
       backgroundColor: kWhiteColor,
       appBar: AppBar(
-          title: Text("DocsHero"),
+          title: mediumText("DocsHero",size: size.width * 0.06),
+          backgroundColor: kOrangeColor,
           actions: [
             // IconButton(onPressed: (){
             //   Navigator.push(context, MaterialPageRoute(builder: (context)=>ShoppingCartScreen()));
@@ -51,18 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ShoppingCartScreen()));
                   },
-                  icon: const Icon(
+                  icon:  Icon(
                     Icons.shopping_cart_rounded,
-                    size: 30,
-                    color: kWhiteColor,
+                    size: size.width * 0.08,
+                    color: kBlueColor,
                   ),
                 ),
                 Positioned(
-                  top: 4,
-                  right: 6,
+                  top: -4,
+                  right: 5,
                   child: Container(
-                    height: 22,
-                    width: 22,
+                    height: size.height * 0.05,
+                    width: size.width * 0.05,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: kOrangeColor,
@@ -71,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text(
                           "${Provider.of<DataProvider>(context,listen: true).productList.length}",
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: size.width * 0.03,
                             fontWeight: FontWeight.bold,
                           ),
                         )),
@@ -80,13 +82,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ],
+          leading: Container(
+            // margin: EdgeInsets.only(top: 5),
+            color: kOrangeColor,
+            child: Image.asset("assets/images/logo.png",fit: BoxFit.fill),
+          ),
+          leadingWidth: size.width * 0.13,
+
           bottom: TabBar(
             tabs: [
               Tab(
-                child: Text("Steps"),
+                child: Text("Steps",style: TextStyle(fontSize: size.width * 0.05),),
               ),
-              Tab(child: Text("Questions"),),
-              Tab(child: Text("Details"),)
+              Tab(child: Text("Questions",style: TextStyle(fontSize: size.width * 0.05)),),
+              Tab(child: Text("Details",style: TextStyle(fontSize: size.width * 0.05)),)
 
             ],
           ),

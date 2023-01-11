@@ -38,9 +38,9 @@ class Steps extends StatelessWidget {
                           Container(
                             width:size.width,
                             alignment: Alignment.center,
-                            padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                            padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.02,bottom: size.height * 0.02),
                             decoration: BoxDecoration(
-                              color: consumer.questionsIndex==index? Colors.orange : kBlueColor,
+                              color: consumer.questionsIndex==index? kOrangeColor : kBlueColor,
                               borderRadius: BorderRadius.circular(10)
                             ),
                             child: largerText("${consumer.surveyModel?.steps?[index].value?.title}",size: 20),
@@ -76,15 +76,16 @@ class Steps extends StatelessWidget {
                             Container(
                               width:size.width,
                               alignment: Alignment.center,
-                              padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                              padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.02,bottom: size.height * 0.02),
                               decoration: BoxDecoration(
-                                  color: consumer.questionsIndex==index? Colors.orange : kBlueColor,
+                                  color: consumer.questionsIndex==index? kOrangeColor : kBlueColor,
                                   borderRadius: BorderRadius.circular(10)
                               ),
                               child: largerText("${consumer.surveyModel?.steps?[index].value?.title}",size: 20),
                             ),
 
                             ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                                 itemCount: consumer.surveyModel?.steps?[index].value?.questions?.length,
                                 itemBuilder: (context, index2){
@@ -96,9 +97,9 @@ class Steps extends StatelessWidget {
                                   width:size.width,
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.only(top: 5,right: 20,left: 20),
-                                  padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                                  padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.015,bottom: size.height * 0.015),
                                   decoration: BoxDecoration(
-                                      color:  consumer.chaptersQuestionsIndex==index2 && consumer.questionsIndex == index? Colors.orange : kBlueColor,
+                                      color:  consumer.chaptersQuestionsIndex==index2 && consumer.questionsIndex == index? kOrangeColor : kBlueColor,
                                       borderRadius: BorderRadius.circular(10)
                                   ),
                                   child: largerText("${consumer.surveyModel?.steps?[index].value?.questions?[index2].title}",size: 20),

@@ -42,6 +42,7 @@ dependencies:
   syncfusion_flutter_sliders: ^20.4.38
   function_tree: ^0.8.13
   eval_ex: ^1.1.7
+  dart_eval: ^0.5.4
 
 
 dev_dependencies:
@@ -70,6 +71,8 @@ flutter:
   assets:
     - assets/files/surveyJson.js
     - assets/files/surveyJson2.js
+    - assets/files/surveyJson3.js
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
