@@ -16,7 +16,7 @@ class ValueElement2 {
     this.questions,
   });
 
-  String? id;
+  var id;
   String? title;
   String? text;
   String? description;

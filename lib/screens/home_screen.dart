@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../components/constants.dart';
+import 'drawer/navigation_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -82,12 +83,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ],
-          leading: Container(
-            // margin: EdgeInsets.only(top: 5),
-            color: kOrangeColor,
-            child: Image.asset("assets/images/logo.png",fit: BoxFit.fill),
-          ),
-          leadingWidth: size.width * 0.13,
+          // leading: Container(
+          //   // margin: EdgeInsets.only(top: 5),
+          //   color: kOrangeColor,
+          //   child: Image.asset("assets/images/logo.png",fit: BoxFit.fill),
+          // ),
+          // leadingWidth: size.width * 0.13,
 
           bottom: TabBar(
             tabs: [
@@ -100,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
       ),
+      drawer: NavigationDrawer(),
       body: TabBarView(
           children: [
             Steps(),

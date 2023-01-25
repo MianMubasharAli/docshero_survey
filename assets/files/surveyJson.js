@@ -29,7 +29,7 @@
                   "salePrice": "4750",
                   "profit": "1425",
                   "discount": 30,
-                  "quantity": 2,
+                  "quantity": 1,
                   "tax": "19",
                   "parentId": "daddeafd-253f-4e8a-8043-bc290583f8eb"
                 },

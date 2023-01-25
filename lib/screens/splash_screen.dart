@@ -1,13 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:docshero/components/constants.dart';
+import 'package:docshero/components/models/login_models/user_model.dart';
 import 'package:docshero/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../components/models/login_models/login_model.dart';
 import '../components/models/survey_model.dart';
 import '../components/models/survey_model2.dart';
 import '../components/providers/data_provilder.dart';
+import '../components/utils/shared_preferences.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,13 +25,38 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   loadAssets() async{
+    SharedPreferences _prefs= await SharedPreferences.getInstance() ;
+    bool? saveMe= _prefs.getBool(SharedPreferencesData.Remember_Me) ?? false;
     final String response = await rootBundle.loadString("assets/files/surveyJson.js");
     var data= await jsonDecode(response);
     Welcome2 surveyModel=Welcome2.fromJson(data);
     Provider.of<DataProvider>(context,listen: false).surveyModel=surveyModel;
-    print("data is: ${data}");
-    if(data != null){
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeScreen()), (route) => false);
+
+
+      print("data is: ${data}");
+      if(data != null){
+        Timer(Duration(seconds: 3), () async {
+          if(saveMe==true) {
+            String? userData= _prefs.getString(SharedPreferencesData.User_Data) ?? "";
+           String? loginData=_prefs.getString(SharedPreferencesData.Login_Data) ?? "";
+            Map<String, dynamic> apiResponse = jsonDecode(userData);
+            Map<String, dynamic> response = jsonDecode(loginData);
+            UserModel user=UserModel.fromJson(apiResponse);
+            LoginModel loginModel=LoginModel.fromJson(response);
+            await Provider.of<DataProvider>(context,listen: false).setUserModel(user);
+            await Provider.of<DataProvider>(context,listen: false).setLoginModel(loginModel);
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) => HomeScreen()), (
+                    route) => false);
+          }else{
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) => LoginScreen()), (
+                    route) => false);
+          }
+        });
+
+
+
     }
   }
 
@@ -36,11 +68,41 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    var size=MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text("Splash Screen"),
-        ),
+      backgroundColor: kBlueColor,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              height: 200,
+              width: 200,
+              padding: EdgeInsets.all(5),
+
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: kOrangeColor,
+                shape: BoxShape.circle
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Image.asset("assets/images/logo.png",height: 120,width: 120,),
+                  ),
+                  Align(
+
+                  )
+                ],
+              ),
+            ),
+          ),
+          mediumText("DocsHero Survey",color: kOrangeColor, ),
+
+          SizedBox(height: 20,),
+          CircularProgressIndicator(color: kOrangeColor,)
+        ],
       ),
     );
   }

@@ -1,15 +1,24 @@
-
+import 'package:docshero/components/providers/contact_report_apis.dart';
 import 'package:docshero/components/providers/data_provilder.dart';
+import 'package:docshero/components/providers/docshero_apis_provider.dart';
+import 'package:docshero/components/providers/employee_apis.dart';
+import 'package:docshero/components/providers/location_apis.dart';
 import 'package:docshero/screens/home_screen.dart';
 import 'package:docshero/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'components/providers/api_data_provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => DataProvider())
+    ChangeNotifierProvider(create: (context) => DataProvider()),
+    ChangeNotifierProvider(create: (context) => ApiDataProvider()),
+    ChangeNotifierProvider(create: (context) => LocationApis()),
+    ChangeNotifierProvider(create: (context)=> EmployeeApis()),
+    ChangeNotifierProvider(create: (context) => ContactReportApis()),
+    ChangeNotifierProvider(create: (context) => DocsheroApisProvider())
   ],
     child: MyApp(),));
 }
@@ -22,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'DocsHero Surey',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

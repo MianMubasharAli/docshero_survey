@@ -1,6 +1,8 @@
 
+import 'package:docshero/components/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 class CustomLoader extends StatelessWidget{
@@ -14,8 +16,8 @@ class CustomLoader extends StatelessWidget{
         child: const SizedBox(
           width: 50,
           height: 50,
-          child: CircularProgressIndicator(
-            color: Colors.green,
+          child: SpinKitFadingCube(
+            color: kOrangeColor,
           ),
         ),
       ),

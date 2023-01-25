@@ -1,22 +1,24 @@
 {
-  "id": "529de9c0-a816-41d1-998e-de382c5af0b1",
+  "id": "f6d128b3-81b9-4723-a325-991885f30e34",
   "name": "Survey 1",
   "steps": [
     {
-      "id": "141c95d7-d037-452a-98f4-7975f4d39464",
+      "id": "b19b86bf-f0a9-42db-9ffe-6b7325a9a34b",
       "type": "question",
       "value": {
-        "id": "5b9fcc21-1af5-43b8-bcc5-23c005927030",
+        "id": 13,
         "title": "Q1",
-        "text": "FORMULA",
-        "description": "description",
+        "text": "",
+        "description": "",
         "chapter": null,
-        "productDetails": "{\"ops\":[{\"insert\":\"product description\\n\"}]}",
+        "chapterId": null,
+        "surveyId": null,
+        "productDetails": "",
         "configuration": {
           "type": "number",
           "options": [
             {
-              "id": "43702475-0440-4878-8ff7-e7ade7c9584b",
+              "id": "6fd9c19c-f447-452f-8839-95c9089fdab7",
               "title": "Option1",
               "value": 0,
               "products": [
@@ -29,9 +31,9 @@
                   "salePrice": "4750",
                   "profit": "1425",
                   "discount": 30,
-                  "quantity": 1,
+                  "quantity": "=5+$option1",
                   "tax": "19",
-                  "parentId": "43702475-0440-4878-8ff7-e7ade7c9584b"
+                  "parentId": "6fd9c19c-f447-452f-8839-95c9089fdab7"
                 }
               ],
               "next": "",
@@ -43,7 +45,7 @@
           ],
           "conditionsForProductSelection": [
             {
-              "id": "2651b088-ca9d-4f14-86ea-417c557025f6",
+              "id": "d4aa51b8-1ee7-4e2d-bc2e-3118abc9ad41",
               "discount": "10",
               "products": [
                 {
@@ -55,15 +57,15 @@
                   "salePrice": "4750",
                   "profit": "1425",
                   "discount": 30,
-                  "quantity": "=10+$option1",
+                  "quantity": "[{\"type\":\"single\",\"operator\":null,\"value\":\"10\",\"parenthesis\":[{\"type\":\"block\",\"operator\":\"+\",\"value\":\"Option1\",\"parenthesis\":[],\"id\":\"6fd9c19c-f447-452f-8839-95c9089fdab7\"}]}]",
                   "tax": "19",
-                  "parentId": "2651b088-ca9d-4f14-86ea-417c557025f6"
+                  "parentId": "d4aa51b8-1ee7-4e2d-bc2e-3118abc9ad41"
                 }
               ],
               "options": [
                 {
                   "option": {
-                    "id": "43702475-0440-4878-8ff7-e7ade7c9584b",
+                    "id": "6fd9c19c-f447-452f-8839-95c9089fdab7",
                     "title": "Option1",
                     "value": 0,
                     "products": [
@@ -76,9 +78,9 @@
                         "salePrice": "4750",
                         "profit": "1425",
                         "discount": 30,
-                        "quantity": 1,
+                        "quantity": "=5+$option1",
                         "tax": "19",
-                        "parentId": "43702475-0440-4878-8ff7-e7ade7c9584b"
+                        "parentId": "6fd9c19c-f447-452f-8839-95c9089fdab7"
                       }
                     ],
                     "next": "",
@@ -119,40 +121,40 @@
     "productDetailsHeaderBgColor": "#fafafa",
     "productDetailsHeaderTextColor": "#000000",
     "layout": {
-      "id": "caee88fc-ef0f-4018-a535-dc8fdb4d879b",
+      "id": "93f845f1-be5c-4e73-849e-9ef286fb362f",
       "type": "row",
       "children": [
         {
-          "id": "3b16054d-6ab0-43ca-b63c-d5ab39cce7d9",
+          "id": "a3f0d7f3-91bf-4e63-8a01-546838313cca",
           "type": "column",
           "children": [],
           "value": 1,
           "contains": "steps"
         },
         {
-          "id": "0feacab0-cec2-44cc-a8f5-5bdb4cbbbf38",
+          "id": "e6a85160-12f6-4408-9c99-4ed10e15dd34",
           "type": "column",
           "children": [
             {
-              "id": "0bc42cf9-bccd-48a3-96f9-e1cf767006f6",
+              "id": "f6e9aa13-7043-4e6b-8ed6-27a9dafa3634",
               "type": "row",
               "children": [],
               "value": 1,
               "contains": "question"
             },
             {
-              "id": "3a1e4c7d-7846-44e6-a4a2-617d0ba5557e",
+              "id": "4cd318b8-4d0b-494f-87b6-54afdf9da1c8",
               "type": "row",
               "children": [
                 {
-                  "id": "a2c653f8-be98-47ad-8b59-625fe2d0bd86",
+                  "id": "b87c3d3d-f934-4b0b-b9de-d37f857e02e4",
                   "type": "column",
                   "children": [],
                   "value": 3,
                   "contains": "details"
                 },
                 {
-                  "id": "1b1200c6-b8dc-4284-af44-3aeb637cc8e3",
+                  "id": "e277c24d-cb49-4f26-a62a-a5e75f73d2e3",
                   "type": "column",
                   "children": [],
                   "value": 2,
