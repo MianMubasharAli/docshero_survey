@@ -48,7 +48,7 @@ class _QuestionsState extends State<Questions> {
                       color: kBlueColor,
                       borderRadius: BorderRadius.circular(10)
                   ),
-                  child: largerText("${Provider.of<DataProvider>(context,listen: false).surveyModel?.steps?[provider.questionsIndex].value?.title}",size: 20),
+                  child: largerText("${Provider.of<DataProvider>(context,listen: false).surveyModel?.steps?[provider.questionsIndex].value?.title}",size: size.shortestSide < 550 ? 20 : 35),
                 ),
                 provider.surveyModel?.steps?[provider.questionsIndex].type == "question" ?
                 Container(
@@ -103,9 +103,9 @@ class _QuestionsState extends State<Questions> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].title}",color: kBlackColor,fontWeight: FontWeight.bold),
+                            textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].title}",color: kBlackColor,fontWeight: FontWeight.bold,size: size.shortestSide < 550 ? 20 : 35),
                             textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].description}",
-                                fontWeight: FontWeight.normal,color: kBlackColor),
+                                fontWeight: FontWeight.normal,color: kBlackColor, size: size.shortestSide < 550 ? 20 : 35),
 
                             ListView.builder(
                                 shrinkWrap:true,
@@ -151,7 +151,7 @@ class _QuestionsState extends State<Questions> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(kBlackColor.withOpacity(0.4)),
                   ),
-                  child: mediumText("Back"),onPressed: (){
+                  child: mediumText("Back",size: size.shortestSide < 550 ? 20 : 35),onPressed: (){
                   if(provider.surveyModel?.steps?[provider.questionsIndex].type == "question"){
                     if(provider.questionsIndex > 0){
                       setState((){
@@ -160,12 +160,17 @@ class _QuestionsState extends State<Questions> {
                     }
                   }else{
                     if(provider.surveyModel?.steps?[provider.questionsIndex].type == "chapter"){
+                      // int len=provider.surveyModel!.steps![provider.questionsIndex].value!.questions!.length - 1;
+                      // provider.setChaptersquestionIndex(len);
                       if(provider.chaptersQuestionsIndex > 0){
                         setState(() {
                           provider.setChaptersquestionIndex(provider.chaptersQuestionsIndex-1);
                         });
                       }else{
                         if(provider.questionsIndex > 0){
+                          if(provider.surveyModel?.steps?[provider.questionsIndex -1].type == "chapter"){
+                            provider.setChaptersquestionIndex(provider.surveyModel!.steps![provider.questionsIndex -1].value!.questions!.length - 1);
+                          }
                           setState((){
                             provider.setQuestionIndex(provider.questionsIndex-1);
                           });
@@ -181,7 +186,7 @@ class _QuestionsState extends State<Questions> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(kBlueColor),
                   ),
-                  child: mediumText("Next"),onPressed: (){
+                  child: mediumText("Next",size: size.shortestSide < 550 ? 20 : 35),onPressed: (){
                   if(provider.surveyModel?.steps?[provider.questionsIndex].type == "question"){
                     if(provider.surveyModel!.steps!.length-1 > provider.questionsIndex){
                       setState((){
@@ -196,6 +201,9 @@ class _QuestionsState extends State<Questions> {
                         });
                       }else{
                         if(provider.surveyModel!.steps!.length-1 > provider.questionsIndex){
+                          if(provider.surveyModel!.steps![provider.questionsIndex].type == "chapter"){
+                            provider.setChaptersquestionIndex(0);
+                          }
                           setState((){
                             provider.setQuestionIndex(provider.questionsIndex+1);
                           });

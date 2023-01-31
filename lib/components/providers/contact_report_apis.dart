@@ -130,6 +130,54 @@ class ContactReportApis extends ChangeNotifier{
     }
   }
 
+  Future<bool> updateContactReport(BuildContext context, String token, int id) async{
+    bool check=false;
+    Get.dialog(CustomLoader());
+    DataProvider dataProvider = Provider.of<DataProvider>(context,listen:false);
+    Uri url=Uri.parse(DOCSHERO_BASE_URL+"contact-reports/$id");
+    try{
+      var header = {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      };
+
+      Map data={
+        "subject": "${dataProvider.contactReportinitialValueSubjectText}",
+        "text": "${dataProvider.contactReportinitialValueQuillText}",
+        "type": "${dataProvider.singleContactReportModel!.modelData!.type}",
+        "priority": "${dataProvider.contactReportinitialValuePriority?.toLowerCase()}",
+        "categoryId": int.parse(dataProvider.singleContactReportModel!.modelData!.categoryId.toString()),
+        "contactType": "${dataProvider.contactReportinitialValueContactType?.toLowerCase()}",
+        "initiatedBy": "${dataProvider.contactReportinitialValueInitiatedBy?.toLowerCase()}",
+        "companyId": "${dataProvider.singleContactReportModel!.modelData!.companyId}",
+        "createdByEmployee": "${dataProvider.singleContactReportModel!.modelData!.createdByEmployee}",
+        "companyEmployees": dataProvider.singleContactReportModel!.modelData!.companyEmployees,
+        "employees": dataProvider.singleContactReportModel!.modelData!.employees
+      };
+
+      var body=jsonEncode(data);
+      var response = await http.put(url,body: body,headers: header);
+      if(response.statusCode == 200){
+        check=true;
+        Map<String, dynamic> apiResponse = jsonDecode(response.body);
+        await getContactReports(context, token);
+        Get.back();
+        Get.back();
+        dataProvider.showSnackbar(context, "${apiResponse['message']}", kOrangeColor);
+        Navigator.pop(context);
+      }else{
+        Get.back();
+        dataProvider.showSnackbar(context, "Something went wrong", kRedColor);
+      }
+      return check;
+    }catch(e){
+      Get.back();
+      print("error from createContactReport is: $e");
+      return check;
+    }
+  }
+
   Future deleteContactReport(BuildContext context, String token, int id) async{
     Get.dialog(CustomLoader());
     DataProvider dataProvider = Provider.of<DataProvider>(context,listen:false);
@@ -177,6 +225,7 @@ class ContactReportApis extends ChangeNotifier{
 
     //initial Values
     dataProvider.setContactReportinitialValueSubjectText(null);
+    dataProvider.setContactReportinitialValueQuillText(null);
     dataProvider.setContactReportinitialValueType(null);
     dataProvider.setContactReportinitialValueCompany(null);
     dataProvider.setContactReportinitialValueTalkedToPeople([]);

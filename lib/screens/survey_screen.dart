@@ -13,23 +13,29 @@ import 'package:provider/provider.dart';
 import '../components/constants.dart';
 import 'drawer/navigation_drawer.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class SurveyScreen extends StatefulWidget {
+  const SurveyScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SurveyScreen> createState() => _SurveyScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SurveyScreenState extends State<SurveyScreen> with SingleTickerProviderStateMixin {
 
 
-
+  late TabController _tabController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _tabController = TabController(length: 3, vsync: this);
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _tabController.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -41,8 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
             resizeToAvoidBottomInset: false,
       backgroundColor: kWhiteColor,
       appBar: AppBar(
-          title: mediumText("DocsHero",size: size.width * 0.06),
+          title: mediumText("DocsHero",size: size.shortestSide < shortestSideCheck ? 21 : size.width * 0.045),
           backgroundColor: kOrangeColor,
+        toolbarHeight: size.shortestSide < shortestSideCheck ? 70 : 100 ,
           actions: [
             // IconButton(onPressed: (){
             //   Navigator.push(context, MaterialPageRoute(builder: (context)=>ShoppingCartScreen()));
@@ -50,22 +57,25 @@ class _HomeScreenState extends State<HomeScreen> {
             Stack(
               alignment: AlignmentDirectional.center,
               children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ShoppingCartScreen()));
-                  },
-                  icon:  Icon(
-                    Icons.shopping_cart_rounded,
-                    size: size.width * 0.08,
-                    color: kBlueColor,
+                Padding(
+                  padding:  EdgeInsets.only(right: size.shortestSide < shortestSideCheck ? 0 : 35.0),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ShoppingCartScreen()));
+                    },
+                    icon:  Icon(
+                      Icons.shopping_cart_rounded,
+                      size: size.shortestSide < shortestSideCheck ? 25 : size.width * 0.04,
+                      color: kBlueColor,
+                    ),
                   ),
                 ),
                 Positioned(
-                  top: -4,
+                  top: 0,
                   right: 5,
                   child: Container(
-                    height: size.height * 0.05,
-                    width: size.width * 0.05,
+                    height: 28,
+                    width: 28,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: kOrangeColor,
@@ -74,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text(
                           "${Provider.of<DataProvider>(context,listen: true).productList.length}",
                           style: TextStyle(
-                            fontSize: size.width * 0.03,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         )),
@@ -83,26 +93,29 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ],
-          // leading: Container(
-          //   // margin: EdgeInsets.only(top: 5),
-          //   color: kOrangeColor,
-          //   child: Image.asset("assets/images/logo.png",fit: BoxFit.fill),
-          // ),
-          // leadingWidth: size.width * 0.13,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 :45,),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
 
-          bottom: TabBar(
+
+        bottom: TabBar(
+          // controller: _tabController,
             tabs: [
               Tab(
-                child: Text("Steps",style: TextStyle(fontSize: size.width * 0.05),),
+                child: Text("Steps",style: TextStyle(fontSize: size.shortestSide < shortestSideCheck ? 18 : size.width * 0.035),),
               ),
-              Tab(child: Text("Questions",style: TextStyle(fontSize: size.width * 0.05)),),
-              Tab(child: Text("Details",style: TextStyle(fontSize: size.width * 0.05)),)
+              Tab(child: Text("Questions",style: TextStyle(fontSize: size.shortestSide < shortestSideCheck ? 18 : size.width * 0.035)),),
+              Tab(child: Text("Details",style: TextStyle(fontSize: size.shortestSide < shortestSideCheck ? 18 : size.width * 0.035)),)
 
             ],
           ),
       ),
-      drawer: NavigationDrawer(),
+
       body: TabBarView(
+        // controller: _tabController,
           children: [
             Steps(),
             Questions(),

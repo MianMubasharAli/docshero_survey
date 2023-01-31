@@ -14,7 +14,8 @@ import 'package:http/http.dart' as http;
 class LocationApis extends ChangeNotifier{
 
 
-  Future getLocationById(BuildContext context, String token,String id) async{
+  Future<bool> getLocationById(BuildContext context, String token,String id) async{
+   bool check=false;
     DataProvider dataProvider = Provider.of<DataProvider>(context,listen:false);
     Uri url=Uri.parse(DOCSHERO_BASE_URL+"company-locations/company/$id");
     try{
@@ -26,20 +27,24 @@ class LocationApis extends ChangeNotifier{
 
       var response = await http.get(url,headers: header);
       if(response.statusCode == 200){
+        check=true;
         Map<String, dynamic> apiResponse = jsonDecode(response.body);
         LocationByIdModel model=LocationByIdModel.fromJson(apiResponse);
         dataProvider.locationByIdModel=model;
        await dataProvider.setDefaultLocationId(model.locations?.first?.id);
 
       }
+      return check;
     }catch(e){
       print("error from getLocationById is: $e");
+      return check;
     }
   }
 
   Future createLocation(BuildContext context, String token) async{
     DataProvider dataProvider = Provider.of<DataProvider>(context,listen:false);
     Uri url=Uri.parse(DOCSHERO_BASE_URL+"company-locations");
+    Get.dialog(CustomLoader());
     try{
       var header = {
         "Authorization": "Bearer $token",
@@ -67,11 +72,13 @@ class LocationApis extends ChangeNotifier{
         if(apiResponse['success'] ==  true){
           await getLocationById(context, token, dataProvider.companyId!);
           Get.back();
+          Get.back();
           dataProvider.showSnackbar(context, "${apiResponse['message']}", kOrangeColor);
         }
 
       }
     }catch(e){
+      Get.back();
       print("error from getLocationById is: $e");
     }
   }

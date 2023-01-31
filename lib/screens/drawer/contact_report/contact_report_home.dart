@@ -30,8 +30,15 @@ class _ContactReportHomeState extends State<ContactReportHome> {
         child:Scaffold(
           appBar: AppBar(
             backgroundColor: kBlueColor,
-            title: mediumText("Contact Reports",color: kWhiteColor,size: 25),
+            title: mediumText("Contact Reports",color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 : 35),
             centerTitle: true,
+            toolbarHeight: size.shortestSide < shortestSideCheck ? 70.0 : 100,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 :45,),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
           ),
       body: Container(
         padding: EdgeInsets.only(left: 20,right: 20),
@@ -41,6 +48,7 @@ class _ContactReportHomeState extends State<ContactReportHome> {
             children: [
               TextButtonWidget(
                   text: "Create Contact Report",
+                  textSize:  size.shortestSide < shortestSideCheck ? 18 : 35,
                   onPress: () async{
                     bool check=await Provider.of<ApiDataProvider>(context,listen: false).getAllCompanies(context, dataProvider.loginModel!.token!,isDelete: true);
                     if(check==true){
@@ -95,6 +103,7 @@ class _ContactReportHomeState extends State<ContactReportHome> {
                                     mainAxisAlignment:MainAxisAlignment.end,
                                     children: [
                                       IconButton(onPressed: () async{
+                                        // await Provider.of<ContactReportApis>(context,listen: false).clearFormValues(context);
                                         await Provider.of<ContactReportApis>(context,listen: false).getContactReportById(context,
                                             dataProvider.loginModel!.token!,
                                             liveData.getContactReportModel!.data[index].id!).then((value) async{
@@ -112,7 +121,7 @@ class _ContactReportHomeState extends State<ContactReportHome> {
                                             await dataProvider.setContactReportinitialValuePriority(toCapitalize(dataProvider.singleContactReportModel!.modelData!.priority));
                                             await dataProvider.setContactReportinitialValueContactType(toCapitalize(dataProvider.singleContactReportModel!.modelData!.contactType));
                                             await dataProvider.setContactReportinitialValueInitiatedBy(toCapitalize(dataProvider.singleContactReportModel!.modelData!.initiatedBy));
-
+                                            await dataProvider.setContactReportinitialValueQuillText(dataProvider.singleContactReportModel!.modelData!.text);
 
                                             await Provider.of<ApiDataProvider>(context,listen: false).showCompanyById(context,
                                                 dataProvider.loginModel!.token!,
@@ -159,7 +168,7 @@ class _ContactReportHomeState extends State<ContactReportHome> {
                                                                   await dataProvider.setContactReportinitialValueCategory(element.name);
                                                                 }
                                                               });
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateContactReport()));
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateContactReport(isUpdate: true,)));
                                                             }
 
                                                           });
@@ -176,44 +185,44 @@ class _ContactReportHomeState extends State<ContactReportHome> {
                                             });
                                           }
                                         });
-                                      }, icon: Icon(Icons.edit_note,color: kOrangeColor,)),
+                                      }, icon: Icon(Icons.edit_note,color: kOrangeColor,size: size.shortestSide < shortestSideCheck ? 24 : 45,)),
                                     IconButton(onPressed: ()async{
                                       await Provider.of<ContactReportApis>(context,listen: false).deleteContactReport(
                                           context,
                                           liveData.loginModel!.token!,
                                           liveData.getContactReportModel!.data[index].id!);
                                       setState(() { });
-                                    }, icon: Icon(Icons.delete,color: kOrangeColor,)),
+                                    }, icon: Icon(Icons.delete,color: kOrangeColor,size: size.shortestSide < shortestSideCheck ? 24 : 40)),
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      mediumText("Subject:  ",color: kBlackColor),
-                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].subject}",color: kBlackColor,fontWeight: FontWeight.normal))
+                                      mediumText("Subject:  ",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 18 : 35),
+                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].subject}",color: kBlackColor,fontWeight: FontWeight.normal,size: size.shortestSide < shortestSideCheck ? 18 : 35))
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      mediumText("Type:       ",color: kBlackColor),
-                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].type}",color: kBlackColor,fontWeight: FontWeight.normal))
+                                      mediumText("Type:       ",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 18 : 35),
+                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].type}",color: kBlackColor,fontWeight: FontWeight.normal,size: size.shortestSide < shortestSideCheck ? 18 : 35))
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      mediumText("Priority:   ",color: kBlackColor),
-                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].priority}",color: kBlackColor,fontWeight: FontWeight.normal))
+                                      mediumText("Priority:   ",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 18 : 35),
+                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].priority}",color: kBlackColor,fontWeight: FontWeight.normal,size: size.shortestSide < shortestSideCheck ? 18 : 35))
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      mediumText("Contact type:   ",color: kBlackColor),
-                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].contactType}",color: kBlackColor,fontWeight: FontWeight.normal))
+                                      mediumText("Contact type:   ",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 18 : 35),
+                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].contactType}",color: kBlackColor,fontWeight: FontWeight.normal,size: size.shortestSide < shortestSideCheck ? 18 : 35))
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      mediumText("Initiated by:      ",color: kBlackColor),
-                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].initiatedBy}",color: kBlackColor,fontWeight: FontWeight.normal))
+                                      mediumText("Initiated by:      ",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 18 : 35),
+                                      Expanded(child: mediumText("${liveData.getContactReportModel?.data[index].initiatedBy}",color: kBlackColor,fontWeight: FontWeight.normal,size: size.shortestSide < shortestSideCheck ? 18 : 35))
                                     ],
                                   ),
                                   SizedBox(height: 10,),

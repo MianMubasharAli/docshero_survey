@@ -1107,6 +1107,339 @@
       }
     },
     {
+          "id": "0b0b2c48-a1e6-47df-b9d0-97bae96f4cc0",
+          "type": "chapter",
+          "value": {
+            "id": "7189ddb1-046e-43ed-bbbb-c1f796b3fe4b",
+            "title": "Chapter 2",
+            "questions": [
+              {
+                "id": "0242bddd-6ca8-4327-ae76-9695b3f54f86",
+                "title": "Q3",
+                "text": "This is question number 3",
+                "description": "",
+                "chapter": null,
+                "productDetails": "",
+                "configuration": {
+                  "type": "single",
+                  "options": [
+                  {
+                                "id": "daddeafd-253f-4e8a-8043-bc290583f8ec",
+                                "title": "Something",
+                                "value": "on",
+                                "products": [
+                                  {
+                                    "id": 6,
+                                    "articleNumber": "E21.3-1005",
+                                    "name": "BS Contract Advanced",
+                                    "listingPrice": "4750",
+                                    "status": "active",
+                                    "salePrice": "4750",
+                                    "profit": "1425",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "daddeafd-253f-4e8a-8043-bc290583f8ec"
+                                  },
+                                  {
+                                    "id": 5,
+                                    "articleNumber": "E21.3-1004",
+                                    "name": "BS Contract Entry",
+                                    "listingPrice": "2490",
+                                    "status": "active",
+                                    "salePrice": "2490",
+                                    "profit": "747",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "daddeafd-253f-4e8a-8043-bc290583f8ec"
+                                  }
+                                ],
+                                "next": "",
+                                "min": 0,
+                                "max": 0,
+                                "step": 0,
+                                "placeholder": ""
+                              },
+                  {
+                                "id": "49300b7a-4fa1-4480-9334-36ac1f78242d",
+                                "title": "Else",
+                                "value": "on",
+                                "products": [
+                                  {
+                                    "id": 3,
+                                    "articleNumber": "E21.3-1002",
+                                    "name": "BS Invoice 050 Basis",
+                                    "listingPrice": "2950",
+                                    "status": "active",
+                                    "salePrice": "2950",
+                                    "profit": "885",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "49300b7a-4fa1-4480-9334-36ac1f78242d"
+                                  }
+                                ],
+                                "next": "",
+                                "min": 0,
+                                "max": 0,
+                                "step": 0,
+                                "placeholder": ""
+                              }
+                  ],
+                  "conditionsForProductSelection": []
+                },
+                "next": "",
+                "back": ""
+              },
+              {
+                          "id": "0242bddd-6ca8-4327-ae76-9695b3f54f88",
+                          "title": "Q6",
+                          "text": "",
+                          "description": "",
+                          "chapter": null,
+                          "productDetails": "",
+                          "configuration": {
+                            "type": "multi",
+                            "options": [
+                             {
+                                          "id": "29471daf-e057-4124-9a9c-310c0cabcf3z",
+                                          "title": "Something",
+                                          "value": true,
+                                          "products": [
+                                            {
+                                              "id": 6,
+                                              "articleNumber": "E21.3-1005",
+                                              "name": "BS Contract Advanced",
+                                              "listingPrice": "4750",
+                                              "status": "active",
+                                              "salePrice": "4750",
+                                              "profit": "1425",
+                                              "discount": 30,
+                                              "quantity": 1,
+                                              "tax": "19",
+                                              "parentId": "29471daf-e057-4124-9a9c-310c0cabcf3c"
+                                            }
+                                          ],
+                                          "next": "",
+                                          "min": 0,
+                                          "max": 0,
+                                          "step": 0,
+                                          "placeholder": ""
+                                        },
+                             {
+                                                      "id": "29471daf-e057-4124-9a9c-310c0cabcf4x",
+                                                      "title": "Else",
+                                                      "value": true,
+                                                      "products": [
+                                                        {
+                                                          "id": 1,
+                                                          "articleNumber": "E21.3-1005",
+                                                          "name": "BS Contract Advanced",
+                                                          "listingPrice": "4750",
+                                                          "status": "active",
+                                                          "salePrice": "4750",
+                                                          "profit": "1425",
+                                                          "discount": 30,
+                                                          "quantity": 1,
+                                                          "tax": "19",
+                                                          "parentId": "29471daf-e057-4124-9a9c-310c0cabcf3c"
+                                                        }
+                                                      ],
+                                                      "next": "",
+                                                      "min": 0,
+                                                      "max": 0,
+                                                      "step": 0,
+                                                      "placeholder": ""
+                                                    }
+                            ],
+                            "conditionsForProductSelection": []
+                          },
+                          "next": "",
+                          "back": ""
+                        },
+              {
+                          "id": "e8b948a6-c8f6-48c7-9bd0-967752622e38",
+                          "title": "Q1",
+                          "text": "",
+                          "description": "",
+                          "chapter": null,
+                          "productDetails": "",
+                          "configuration": {
+                            "type": "number",
+                            "options": [
+                              {
+                                "id": "65ca9637-d12a-493f-9379-d0f6f73674b1",
+                                "title": "IDK",
+                                "value": 0,
+                                "products": [
+                                  {
+                                    "id": 6,
+                                    "articleNumber": "E21.3-1005",
+                                    "name": "BS Contract Advanced",
+                                    "listingPrice": "4750",
+                                    "status": "active",
+                                    "salePrice": "4750",
+                                    "profit": "1425",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "65ca9637-d12a-493f-9379-d0f6f73674b1"
+                                  },
+                                  {
+                                    "id": 5,
+                                    "articleNumber": "E21.3-1004",
+                                    "name": "BS Contract Entry",
+                                    "listingPrice": "2490",
+                                    "status": "active",
+                                    "salePrice": "2490",
+                                    "profit": "747",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "65ca9637-d12a-493f-9379-d0f6f73674b1"
+                                  }
+                                ],
+                                "next": "",
+                                "min": 0,
+                                "max": "100",
+                                "step": "10",
+                                "placeholder": ""
+                              }
+                            ],
+                            "conditionsForProductSelection": [
+                              {
+                                "id": "90a03275-1f62-410d-b75a-f6a9cee4d37f",
+                                "discount": "10",
+                                "products": [
+                                  {
+                                    "id": 6,
+                                    "articleNumber": "E21.3-1005",
+                                    "name": "BS Contract Advanced",
+                                    "listingPrice": "4750",
+                                    "status": "active",
+                                    "salePrice": "4750",
+                                    "profit": "1425",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "90a03275-1f62-410d-b75a-f6a9cee4d37f"
+                                  },
+                                  {
+                                    "id": 3,
+                                    "articleNumber": "E21.3-1002",
+                                    "name": "BS Invoice 050 Basis",
+                                    "listingPrice": "2950",
+                                    "status": "active",
+                                    "salePrice": "2950",
+                                    "profit": "885",
+                                    "discount": 30,
+                                    "quantity": 1,
+                                    "tax": "19",
+                                    "parentId": "90a03275-1f62-410d-b75a-f6a9cee4d37f"
+                                  }
+                                ],
+                                "options": [
+                                  {
+                                    "option": {
+                                      "id": "65ca9637-d12a-493f-9379-d0f6f73674b1",
+                                      "title": "IDK",
+                                      "value": 30,
+                                      "products": [
+                                        {
+                                          "id": 6,
+                                          "articleNumber": "E21.3-1005",
+                                          "name": "BS Contract Advanced",
+                                          "listingPrice": "4750",
+                                          "status": "active",
+                                          "salePrice": "4750",
+                                          "profit": "1425",
+                                          "discount": 30,
+                                          "quantity": 1,
+                                          "tax": "19",
+                                          "parentId": "65ca9637-d12a-493f-9379-d0f6f73674b1"
+                                        },
+                                        {
+                                          "id": 5,
+                                          "articleNumber": "E21.3-1004",
+                                          "name": "BS Contract Entry",
+                                          "listingPrice": "2490",
+                                          "status": "active",
+                                          "salePrice": "2490",
+                                          "profit": "747",
+                                          "discount": 30,
+                                          "quantity": 1,
+                                          "tax": "19",
+                                          "parentId": "65ca9637-d12a-493f-9379-d0f6f73674b1"
+                                        }
+                                      ],
+                                      "next": "",
+                                      "min": 0,
+                                      "max": "100",
+                                      "step": "10",
+                                      "placeholder": ""
+                                    },
+                                    "condition": "==",
+                                    "operator": "if",
+                                    "value": "20"
+                                  },
+                                  {
+                                                    "option": {
+                                                      "id": "65ca9637-d12a-493f-9379-d0f6f73674b1",
+                                                      "title": "IDK",
+                                                      "value": 30,
+                                                      "products": [
+                                                        {
+                                                          "id": 6,
+                                                          "articleNumber": "E21.3-1005",
+                                                          "name": "BS Contract Advanced",
+                                                          "listingPrice": "4750",
+                                                          "status": "active",
+                                                          "salePrice": "4750",
+                                                          "profit": "1425",
+                                                          "discount": 30,
+                                                          "quantity": 1,
+                                                          "tax": "19",
+                                                          "parentId": "65ca9637-d12a-493f-9379-d0f6f73674b1"
+                                                        },
+                                                        {
+                                                          "id": 5,
+                                                          "articleNumber": "E21.3-1004",
+                                                          "name": "BS Contract Entry",
+                                                          "listingPrice": "2490",
+                                                          "status": "active",
+                                                          "salePrice": "2490",
+                                                          "profit": "747",
+                                                          "discount": 30,
+                                                          "quantity": 1,
+                                                          "tax": "19",
+                                                          "parentId": "65ca9637-d12a-493f-9379-d0f6f73674b1"
+                                                        }
+                                                      ],
+                                                      "next": "",
+                                                      "min": 0,
+                                                      "max": "100",
+                                                      "step": "10",
+                                                      "placeholder": ""
+                                                    },
+                                                    "condition": "<",
+                                                    "operator": "&&",
+                                                    "value": "50"
+                                                  }
+                                ],
+                                "isSatisfied": false,
+                                "next": ""
+                              }
+                            ]
+                          },
+                          "next": "",
+                          "back": ""
+                        }
+
+            ]
+          }
+        },
+    {
       "id": "234e6fcf-2289-42f5-b4a0-643ed53e34ce",
       "type": "question",
       "value": {

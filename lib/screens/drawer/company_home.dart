@@ -36,11 +36,28 @@ class _CompaniesState extends State<Companies> {
     provider.setFax(null);
     provider.setTermsOfPayment(null);
   }
+
+  _runFilter(String enteredKeyword){
+    List result=Provider.of<DataProvider>(context,listen: false).allCompaniesModel!.data!;
+    if(enteredKeyword.isEmpty){
+
+    }else{
+      result = Provider.of<DataProvider>(context,listen: false).allCompaniesModel!.data!.where((element) => element!.companyName!.toLowerCase()
+          .contains(enteredKeyword.toLowerCase())).toList();
+    }
+    setState((){
+      _fountUsers=result;
+    });
+
+  }
+
+  List _fountUsers=[];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     data();
+    _fountUsers=Provider.of<DataProvider>(context,listen: false).allCompaniesModel!.data!;
   }
   @override
   Widget build(BuildContext context) {
@@ -51,8 +68,15 @@ class _CompaniesState extends State<Companies> {
         backgroundColor: kWhiteColor,
         appBar: AppBar(
           backgroundColor: kBlueColor,
-          title: mediumText("Companies",color: kWhiteColor,size: 25),
+          title: mediumText("Companies",color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 : 35),
           centerTitle: true,
+          toolbarHeight: size.shortestSide < shortestSideCheck ? 70.0 : 100,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 :45,),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: Container(
           padding: EdgeInsets.only(left: 20,right: 20),
@@ -63,11 +87,13 @@ class _CompaniesState extends State<Companies> {
               children: [
                 TextFormField(
                   style: TextStyle(
-                    color: kBlackColor
+                    color: kBlackColor,
+                    fontSize:  size.shortestSide < shortestSideCheck ? 16 : 22
                   ),
                   decoration: InputDecoration(
                     hintText: "Search...",
                     hintStyle: TextStyle(
+                      fontSize:  size.shortestSide < shortestSideCheck ? 16 : 22,
                       color: Colors.black.withOpacity(0.5)
                     ),
                     filled: true,
@@ -76,12 +102,16 @@ class _CompaniesState extends State<Companies> {
                       borderSide: BorderSide(color: kBlackColor),
                       borderRadius: BorderRadius.all(Radius.circular(5))
                     ),
-                    prefixIcon: Icon(Icons.search,size: 35,)
+                    prefixIcon: Icon(Icons.search,size: size.shortestSide < shortestSideCheck ? 35 : 45,)
                   ),
+                  onChanged: (onChanged) async{
+                   await _runFilter(onChanged);
+                  },
                 ),
                 SizedBox(height: 10,),
                 TextButtonWidget(
                     text: "Create Company",
+                    textSize:  size.shortestSide < shortestSideCheck ? 16 : 22,
                     onPress: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> CompanyPersonalDetails()));
                     }),
@@ -89,7 +119,7 @@ class _CompaniesState extends State<Companies> {
                 ListView.builder(
                   shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: Provider.of<DataProvider>(context,listen: true).allCompaniesModel!.data!.length,
+                    itemCount: _fountUsers.length,
                     itemBuilder: (context, index){
                   return InkWell(
                     onTap: () async{
@@ -119,39 +149,24 @@ class _CompaniesState extends State<Companies> {
                             children: [
                               Container(
                                   width: size.width * 0.6,
-                                  child: mediumText("${liveData.allCompaniesModel!.data?[index]?.companyName} (${liveData.allCompaniesModel!.data?[index]?.companyNumber})",color: kBlackColor,softWrap: false,maxLines: 1,size: 16)),
+                                  child: mediumText("${_fountUsers[index]?.companyName} (${_fountUsers[index]?.companyNumber})",color: kBlackColor,softWrap: false,maxLines: 1,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                             Row(
                               children: [
                                 IconButton(onPressed: () async{
                                   await Provider.of<ApiDataProvider>(context,listen: false).showCompanyById(context,
                                       liveData.loginModel!.token!,
-                                      liveData.allCompaniesModel!.data![index]!.id!);
+                                      _fountUsers[index]!.id!);
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowCompanyDetail()));
-                                  // showDialog(context: context, builder: (context){
-                                  //   return Dialog(
-                                  //     child: Container(
-                                  //       padding: EdgeInsets.all(10),
-                                  //       decoration: BoxDecoration(
-                                  //         // color: kWhiteColor,
-                                  //         borderRadius: BorderRadius.circular(10)
-                                  //       ),
-                                  //       child: Column(
-                                  //         children: [
-                                  //
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //   );
-                                  // });
-                                }, icon: Icon(Icons.remove_red_eye,color: kOrangeColor,),padding: EdgeInsets.zero,),
+
+                                }, icon: Icon(Icons.remove_red_eye,color: kOrangeColor,size: size.shortestSide < shortestSideCheck ? 24 : 35,),padding: EdgeInsets.zero,),
 
                                 IconButton(onPressed: () async{
                                  await Provider.of<ApiDataProvider>(context,listen: false).deleteCompanyById(context,  dataProvider.loginModel!.token!,
-                                      liveData.allCompaniesModel!.data![index]!.id!);
+                                     _fountUsers[index]!.id!);
                                  setState(() {
 
                                  });
-                                }, icon: Icon(Icons.delete,color: kOrangeColor,),padding: EdgeInsets.zero,constraints: BoxConstraints(),)
+                                }, icon: Icon(Icons.delete,color: kOrangeColor,size: size.shortestSide < shortestSideCheck ? 24 : 30,),padding: EdgeInsets.zero,constraints: BoxConstraints(),)
 
                               ],
                             )
@@ -170,7 +185,11 @@ class _CompaniesState extends State<Companies> {
     );
   }
   getData(int index) async{
+
     DataProvider dataProvider=Provider.of<DataProvider>(context,listen: false);
+
+    // await dataProvider.data();
+
     ApiDataProvider apiDataProvider=Provider.of<ApiDataProvider>(context,listen: false);
     String companyId=dataProvider.allCompaniesModel!.data![index]!.id!;
     await apiDataProvider.showCompanyById(context, dataProvider.loginModel!.token!, companyId);

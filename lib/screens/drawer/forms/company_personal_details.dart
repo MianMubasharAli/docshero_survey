@@ -56,25 +56,7 @@ class _CompanyPersonalDetailsState extends State<CompanyPersonalDetails> {
     _cntMulti3.dispose();
     super.dispose();
   }
-  data(){
-    DataProvider provider=Provider.of<DataProvider>(context,listen: false);
-    provider.setName(null);
-    provider.setType(null);
-    provider.setCustomerType(null);
-    provider.setUrl(null);
-    provider.setAddess1(null);
-    provider.setAddress2(null);
-    provider.setCity(null);
-    provider.setZip(null);
-    provider.setCountry(null);
-    provider.setState(null);
-    provider.setPhone(null);
-    provider.setVatId(null);
-    provider.setFax(null);
-    provider.setTermsOfPayment(null);
-    provider.setComapnyId(null);
-    provider.setCameBackCheck(false);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +67,18 @@ class _CompanyPersonalDetailsState extends State<CompanyPersonalDetails> {
         backgroundColor: kWhiteColor,
         appBar: AppBar(
           centerTitle: true,
-          title: mediumText("Company",color: kWhiteColor,size: 25,),
+          title: mediumText("Company",color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 : 35,),
+          toolbarHeight: size.shortestSide < shortestSideCheck ? 70.0 : 100,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 :45,),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: WillPopScope(
           onWillPop: () async{
-            await data();
+            await provider.data();
             return true;
           },
           child: Container(
@@ -416,7 +405,7 @@ class _CompanyPersonalDetailsState extends State<CompanyPersonalDetails> {
                             margin: EdgeInsets.only(bottom: 10),
                             child: TextButtonWidget(
 
-                                text: "Create and Proceed",
+                                text: widget.checkForUpdate == false ? provider.cameBack == false ? "Create and Proceed" : "Update and Proceed" : provider.cameBack == false ? "Create and Proceed" : "Update and Proceed",
                                 onPress: () async{
                                   if(!_formKey.currentState!.validate()){
                                     return;

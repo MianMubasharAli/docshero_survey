@@ -2,10 +2,8 @@ import 'package:docshero/components/constants.dart';
 import 'package:docshero/components/providers/api_data_provider.dart';
 import 'package:docshero/components/providers/contact_report_apis.dart';
 import 'package:docshero/components/providers/data_provilder.dart';
-import 'package:docshero/screens/drawer/company_home.dart';
-import 'package:docshero/screens/drawer/contact_report/contact_report_home.dart';
-import 'package:docshero/screens/drawer/contact_report/create_contact_report.dart';
 import 'package:docshero/screens/drawer/user_profile.dart';
+import 'package:docshero/screens/survey_screen.dart';
 import 'package:docshero/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,18 +24,18 @@ class NavigationDrawer extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),topRight: Radius.circular(20)),
       ),
-      width: MediaQuery.of(context).size.shortestSide < 550 ? MediaQuery.of(context).size.width * 0.75 :MediaQuery.of(context).size.width * 0.85,
+      width: MediaQuery.of(context).size.shortestSide < shortestSideCheck ? MediaQuery.of(context).size.width * 0.75 :MediaQuery.of(context).size.width * 0.85,
       child: SingleChildScrollView(
         child: Column(
           children: [
-            buildHeader(context,provider),
+            buildHeader(context,provider,MediaQuery.of(context).size),
             buildItems(context,MediaQuery.of(context).size,provider)
           ],
         ),
       ),
     );
   }
-  buildHeader(BuildContext context,DataProvider provider){
+  buildHeader(BuildContext context,DataProvider provider, Size size){
     return Column(
       children: [
         Container(
@@ -45,7 +43,7 @@ class NavigationDrawer extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                radius: 35,
+                radius: size.shortestSide < shortestSideCheck ? 35 : 60,
                 backgroundImage: AssetImage("assets/images/logo.png"),
               ),
               SizedBox(width: 10,),
@@ -53,8 +51,12 @@ class NavigationDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   mediumText("${provider.userModel!.firstName} ${provider.userModel!.lastName}",
-                      color: kWhiteColor),
-                  mediumText("${provider.userModel!.email}", color: kWhiteColor,size: 16),
+                      color: kWhiteColor,
+                      size: size.shortestSide < shortestSideCheck ? 18 : 35
+                  ),
+
+                  mediumText("${provider.userModel!.email}", color: kWhiteColor,
+                  size: size.shortestSide < shortestSideCheck ? 16 : 25),
 
                   SizedBox(height: 15,),
 
@@ -62,7 +64,7 @@ class NavigationDrawer extends StatelessWidget {
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> UserProfile()));
                     },
-                    child: mediumText("My Profile", color: kOrangeColor,size: 16,
+                    child: mediumText("My Profile", color: kOrangeColor,size: size.shortestSide < shortestSideCheck ? 16 : 25,
                         textDecoration: TextDecoration.underline,),
                   )
                 ],
@@ -83,30 +85,49 @@ class NavigationDrawer extends StatelessWidget {
         Column(
           children: [
             ListTile(
-              leading: Icon(Icons.person_add_alt_outlined,color: kWhiteColor),
-              title: Text("Companies",style: TextStyle(color: kWhiteColor),),
+              leading: Icon(Icons.person_add_alt_outlined,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
+              title: Text("Companies",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
               onTap: () async{
-
+                await provider.setCheckForDialog(true);
                 await Provider.of<ApiDataProvider>(context,listen: false).getAllCompanies(context,provider.loginModel!.token! );
-
+                await provider.setCheckForDialog(false);
               },
             ),
+            SizedBox(height: size.shortestSide < shortestSideCheck ? 0 :10,),
             ListTile(
-              leading: Icon(Icons.person,color: kWhiteColor),
-              title: Text("Customers",style: TextStyle(color: kWhiteColor),),
+              leading: Icon(Icons.person,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
+              title: Text("Customers",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
               onTap: (){},
             ),
+            SizedBox(height: size.shortestSide < shortestSideCheck ? 0 : 10,),
             ListTile(
-              leading: Icon(Icons.contact_mail_sharp,color: kWhiteColor),
-              title: Text("Contact Report",style: TextStyle(color: kWhiteColor),),
+              leading: Icon(Icons.contact_mail_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
+              title: Text("Contact Report",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
               onTap: () async{
+                await provider.setCheckForDialog(true);
                 await Provider.of<ContactReportApis>(context,listen: false).getContactReports(context, provider.loginModel!.token!);
+                await provider.setCheckForDialog(false);
+                },
+            ),
+            SizedBox(height: size.shortestSide < shortestSideCheck ? 0 :10,),
+            ListTile(
+              leading: Icon(Icons.edit_note,color: kWhiteColor, size: size.shortestSide < shortestSideCheck ? 24 : 60,),
+              title: Text("Survey",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
+              onTap: () async{
+                await provider.setCheckForDialog(true);
+                await Provider.of<DataProvider>(context,listen: false).loadJsonData().then((value) async{
+                  if(value==true){
+                    await provider.setCheckForDialog(false);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SurveyScreen()));
+                  }
+                });
+
               },
             ),
           ],
         ),
 
-        SizedBox(height: size.height * 0.47,),
+        SizedBox(height: size.height * 0.4,),
 
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -117,8 +138,8 @@ class NavigationDrawer extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Logout",style: TextStyle(color: kWhiteColor),),
-                  Icon(Icons.logout,color: kWhiteColor)
+                  Text("Logout",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
+                  Icon(Icons.logout,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 60)
                 ],
               ),
               onTap: () async{

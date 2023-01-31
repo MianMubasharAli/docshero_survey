@@ -14,6 +14,7 @@ import 'package:docshero/components/models/option2.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:eval_ex/expression.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../models/companies_models/post_employee_model.dart';
 import '../models/companies_models/single_company_data_model.dart';
@@ -37,6 +38,7 @@ bool _checkForMultiType=false;
 List<int> questionCheckedItems=[];
 List<OptionProduct2> productList=[];
 bool _checkForDialog=false;
+
 
 //ContactReport models
   GetContactReportModel? getContactReportModel;
@@ -63,6 +65,7 @@ bool _checkForDialog=false;
   String? _contactReportSubjectText;
 
   String? _contactReportinitialValueSubjectText;
+  String? _contactReportinitialValueQuillText;
   String? _contactReportinitialValueType;
   String? _contactReportinitialValueCompany;
   List<String> _contactReportinitialValueTalkedToPeople=[];
@@ -182,6 +185,10 @@ LoginModel? _loginModel;
 
   setContactReportinitialValueSubjectText(String? abc){
     _contactReportinitialValueSubjectText=abc;
+    notifyListeners();
+  }
+  setContactReportinitialValueQuillText(String? abc){
+    _contactReportinitialValueQuillText=abc;
     notifyListeners();
   }
   setContactReportinitialValueType(String? abc){
@@ -451,9 +458,13 @@ calculateResult(numberInput){
   return result;
 }
 
+Map<String, dynamic> previousValueMap={};
 //function
   //for number type
   optionSelected(DataProvider provider, Configuration2 selectedQuestion, int index){
+   //previousValueMap["${selectedQuestion.options?[index].id}"]=selectedQuestion.options?[index].value;
+   //  print(previousValueMap);
+   //  print(selectedQuestion.options![index].value);
     Option2 option=selectedQuestion.options![index];
     // if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
     //   option=  provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index];
@@ -463,6 +474,7 @@ calculateResult(numberInput){
 
     List<OptionProduct2> selectedProducts = [...?option.products];
     if(option.value > 0){
+
       selectedProducts.forEach((product) {
         var parsedQuantity=provider.checkForFormula(product.quantity)
             ? provider.executeFormula(product)
@@ -736,6 +748,38 @@ calculateResult(numberInput){
     );
   }
 
+  data(){
+
+    setName(null);
+    setType(null);
+    setCustomerType(null);
+    setUrl(null);
+    setAddess1(null);
+    setAddress2(null);
+    setCity(null);
+    setZip(null);
+    setCountry(null);
+    setState(null);
+    setPhone(null);
+    setVatId(null);
+    setFax(null);
+    setTermsOfPayment(null);
+    setComapnyId(null);
+    setCameBackCheck(false);
+  }
+
+  Future<bool> loadJsonData() async{
+    bool check=false;
+    final String response = await rootBundle.loadString("assets/files/surveyJson.js");
+    var data= await jsonDecode(response);
+    Welcome2 model=Welcome2.fromJson(data);
+    surveyModel=model;
+    if(data != null){
+      check=true;
+    }
+    return check;
+  }
+
 
 int get questionsIndex => _questionsIndex;
 int get chaptersQuestionsIndex => _chaptersQuestionIndex;
@@ -784,6 +828,7 @@ String? get name => _name;
 
       //initial values contact report form
   String? get contactReportinitialValueSubjectText => _contactReportinitialValueSubjectText;
+  String? get contactReportinitialValueQuillText => _contactReportinitialValueQuillText;
   String? get contactReportinitialValueType => _contactReportinitialValueType;
   String? get contactReportinitialValueCompany => _contactReportinitialValueCompany;
   List<String>? get contactReportinitialValueTalkedToPeople => _contactReportinitialValueTalkedToPeople;

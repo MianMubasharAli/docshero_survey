@@ -14,10 +14,12 @@ class ShoppingCartScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("Shopping Cart"),
+        centerTitle: true,
+        toolbarHeight: size.shortestSide < shortestSideCheck ? 70.0 : 100,
+        title: mediumText("Shopping Cart",color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 : 35),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_sharp),
-          onPressed: () {
+          icon: Icon(Icons.arrow_back_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 :45,),
+          onPressed: (){
             Navigator.pop(context);
           },
         ),
@@ -81,7 +83,7 @@ class ShoppingCartScreen extends StatelessWidget {
                             color: kBlackColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(5)
                         ),
-                        child: mediumText("${product.name}",color: kBlackColor,softWrap: false,maxLines: 3),
+                        child: mediumText("${product.name}",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 18 : 25,softWrap: false,maxLines: 3),
                       ),
                       Container(
                         width: size.width * 0.23,
@@ -91,7 +93,7 @@ class ShoppingCartScreen extends StatelessWidget {
                             color: kBlackColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(5)
                         ),
-                        child: mediumText("${product.quantity}",color: kBlackColor,softWrap: false,maxLines: 3),
+                        child: mediumText("${product.quantity}",size: size.shortestSide < shortestSideCheck ? 18 : 25,color: kBlackColor,softWrap: false,maxLines: 3),
                       ),
                       Container(
                         width: size.width * 0.34,
@@ -103,7 +105,7 @@ class ShoppingCartScreen extends StatelessWidget {
                         ),
                         child: mediumText("${
                             // int.parse(product.quantity.toString()) *
-                                double.parse(product.salePrice.toString())}",color: kBlackColor,softWrap: false,maxLines: 3),
+                                double.parse(product.salePrice.toString())}",size: size.shortestSide < shortestSideCheck ? 18 : 25,color: kBlackColor,softWrap: false,maxLines: 3),
                       )
                     ],
                   );

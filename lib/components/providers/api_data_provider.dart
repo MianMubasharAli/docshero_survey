@@ -8,8 +8,9 @@ import 'package:docshero/components/models/login_models/user_model.dart';
 import 'package:docshero/components/providers/data_provilder.dart';
 import 'package:docshero/components/providers/location_apis.dart';
 import 'package:docshero/components/reuseable_widgets/custom_loader.dart';
+import 'package:docshero/screens/dashboard_screen.dart';
 import 'package:docshero/screens/drawer/forms/company_location_details.dart';
-import 'package:docshero/screens/home_screen.dart';
+import 'package:docshero/screens/survey_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,7 +57,7 @@ class ApiDataProvider extends ChangeNotifier{
         await getUserData(context, user.tokenInfo!.userId!,user.token!);
         Get.back();
         if(user.refreshToken != "" && user.refreshToken != null){
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeScreen()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> DashboardScreen()), (route) => false);
         }
       }else{
         Get.back();
@@ -221,7 +222,8 @@ class ApiDataProvider extends ChangeNotifier{
     }
   }
 
-  Future showCompanyById(BuildContext context, String token,String id) async{
+  Future<bool> showCompanyById(BuildContext context, String token,String id) async{
+    bool check=false;
     DataProvider dataProvider = Provider.of<DataProvider>(context,listen:false);
     LocationApis locationApis = Provider.of<LocationApis>(context,listen:false);
     Uri url=Uri.parse(DOCSHERO_BASE_URL+"companies/$id");
@@ -235,6 +237,7 @@ class ApiDataProvider extends ChangeNotifier{
 
       var response = await http.get(url,headers: header);
       if(response.statusCode == 200){
+        check=true;
         Map<String, dynamic> apiResponse = jsonDecode(response.body);
         SingleCompanyDataModel model=SingleCompanyDataModel.fromJson(apiResponse);
         dataProvider.singleCompanyDataModel=model;
@@ -245,9 +248,11 @@ class ApiDataProvider extends ChangeNotifier{
       }else{
         Get.back();
       }
+      return check;
     }catch(e){
       Get.back();
       print("error from showCompanyById is: $e");
+      return check;
     }
   }
 

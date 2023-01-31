@@ -55,6 +55,7 @@ class _TypeNumberState extends State<TypeNumber> {
                         child: mediumText("${provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].title}",
                             color: kBlackColor,
                             maxLines: 3,
+                            size:  size.shortestSide < 550 ? 20 : 35,
                             softWrap: false),
                       ) :
                       SizedBox(
@@ -62,6 +63,7 @@ class _TypeNumberState extends State<TypeNumber> {
                         child: mediumText("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].title}",
                             color: kBlackColor,
                             maxLines: 3,
+                            size:  size.shortestSide < 550 ? 20 : 35,
                             softWrap: false),
                       ),
 
@@ -70,7 +72,7 @@ class _TypeNumberState extends State<TypeNumber> {
                 ),
               ),
               Container(
-                width: size.width * 0.3,
+                width:  size.shortestSide < 550 ? size.width * 0.3 : size.width * 0.4,
                 decoration: BoxDecoration(
                     color: kWhiteColor
                 ),
@@ -138,6 +140,8 @@ class _TypeNumberState extends State<TypeNumber> {
                     IconButton(onPressed: (){
                       if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
                         if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString()) > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].min.toString())){
+
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
 
                           setState(() {
                             provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value=(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value! - int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()));
@@ -376,6 +380,7 @@ class _TypeNumberState extends State<TypeNumber> {
                         if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString())
                             > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].min.toString())){
 
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value;
                           setState(() {
                             provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
                             =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
@@ -613,14 +618,14 @@ class _TypeNumberState extends State<TypeNumber> {
                           // });
                         }
                       }
-                      setState(() {
-                        provider.setCheckValue(onChanedId);
-                      });
+                      // setState(() {
+                      //   provider.setCheckValue(onChanedId);
+                      // });
 
                     },
                         icon: Icon(Icons.remove,color: kGreenColor,size: size.width * 0.07,),
-                        constraints: BoxConstraints(),
-                        padding: EdgeInsets.only(right: 10)),
+                        constraints: size.shortestSide < 550 ? BoxConstraints() : BoxConstraints(minHeight: 48,minWidth: 48),
+                        padding: size.shortestSide < 550 ? EdgeInsets.only() :EdgeInsets.only(right: 30,),),
                     IconButton(onPressed: (){
                       if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
                         if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString()) < int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].max.toString())){
@@ -712,6 +717,8 @@ class _TypeNumberState extends State<TypeNumber> {
                           //
                           //   });
                           // }
+
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
                             setState(() {
                               provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value=(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value! + int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()));
                             });
@@ -978,6 +985,8 @@ class _TypeNumberState extends State<TypeNumber> {
                           //   }
                           //
                           // }
+
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value;
                           setState(() {
                             provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
                             =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
@@ -1154,13 +1163,13 @@ class _TypeNumberState extends State<TypeNumber> {
 
                         }
                       }
-                      setState(() {
-                        provider.setCheckValue(onChanedId);
-                      });
+                      // setState(() {
+                      //   provider.setCheckValue(onChanedId);
+                      // });
                     },
                       icon: Icon(Icons.add,color: kGreenColor,size: size.width * 0.07),
-                      constraints: BoxConstraints(),
-                      padding: EdgeInsets.only(right: 0),),
+                      constraints: size.shortestSide < 550 ? BoxConstraints() : BoxConstraints(minHeight: 48,minWidth: 48),
+                      padding: size.shortestSide < 550 ? EdgeInsets.only() :EdgeInsets.only(right: 30,left: 30),),
                   ],
                 ),
               ),

@@ -1,4 +1,4 @@
-package com.docshero.docshero
+package com.docshero.survey
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -26,3 +26,6 @@ Text textWithoutLines(String text,{Color color=kWhiteColor,double size=18,FontWe
 
 String BASE_URL="https://h2972847.stratoserver.net/o/public/index.php/";
 String DOCSHERO_BASE_URL="http://admin.docshero.de/api/";
+
+
+double shortestSideCheck=550;

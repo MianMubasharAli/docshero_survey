@@ -30,13 +30,17 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
         child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: mediumText("Locations",color: kWhiteColor,size: 25),
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back,size: 30),
-        //   onPressed: (){
-        //
-        //   },
-        // ),
+        toolbarHeight: size.shortestSide < shortestSideCheck ? 70.0 : 100,
+        title: mediumText("Locations",color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 : 35,),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_sharp,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 25 :45,),
+          onPressed: () async{
+            await provider.setCameBackCheck(true);
+            provider.cameBack;
+            print(provider.cameBack);
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: WillPopScope(
         onWillPop: () async{
@@ -58,6 +62,7 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                   children: [
                     TextButtonWidget(
                         text: "Add Location",
+                        textSize: size.shortestSide < shortestSideCheck ? 16 : 22,
                         onPress: (){
                           showDialog(context: context, builder: (context){
 
@@ -72,13 +77,15 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Center(child: mediumText("Add Location Details",color: kBlackColor,)),
+                                          Center(child: mediumText("Add Location Details",size: size.shortestSide < shortestSideCheck ? 18 : 24,color: kBlackColor,)),
                                           Container(
                                               margin: EdgeInsets.only(top: 5,bottom: 5),
-                                              child: mediumText("Address Line 1:", color: kBlackColor,size: 16)),
+                                              child: mediumText("Address Line 1:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                           RoundedInputField(
                                               hintText: "Address 1",
                                               hintTextColor: Colors.black.withOpacity(0.5),
+                                              textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                              hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                               textColor: kBlackColor,
                                               onChanged: (onChanged){
                                                 provider.locationData.addess1=onChanged;
@@ -89,10 +96,12 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                               sufficIcon: ""),
                                           Container(
                                               margin: EdgeInsets.only(top: 5,bottom: 5),
-                                              child: mediumText("Address Line 2:", color: kBlackColor,size: 16)),
+                                              child: mediumText("Address Line 2:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                           RoundedInputField(
                                               hintText: "Address 2",
                                               hintTextColor: Colors.black.withOpacity(0.5),
+                                              textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                              hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                               textColor: kBlackColor,
                                               onChanged: (onChanged){
                                                 provider.locationData.address2=onChanged;
@@ -103,9 +112,11 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                               sufficIcon: ""),
                                           Container(
                                               margin: EdgeInsets.only(top: 5,bottom: 5),
-                                              child: mediumText("City:", color: kBlackColor,size: 16)),
+                                              child: mediumText("City:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                           RoundedInputField(
                                               hintText: "City",
+                                              hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                              textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                               hintTextColor: Colors.black.withOpacity(0.5),
                                               textColor: kBlackColor,
                                               onChanged: (onChanged){
@@ -117,9 +128,11 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                               sufficIcon: ""),
                                           Container(
                                               margin: EdgeInsets.only(top: 5,bottom: 5),
-                                              child: mediumText("Zip:", color: kBlackColor,size: 16)),
+                                              child: mediumText("Zip:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                           RoundedInputField(
                                               hintText: "Zip",
+                                              textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                              hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                               hintTextColor: Colors.black.withOpacity(0.5),
                                               textColor: kBlackColor,
                                               onChanged: (onChanged){
@@ -131,9 +144,11 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                               sufficIcon: ""),
                                           Container(
                                               margin: EdgeInsets.only(top: 5,bottom: 5),
-                                              child: mediumText("Country:", color: kBlackColor,size: 16)),
+                                              child: mediumText("Country:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                           RoundedInputField(
                                               hintText: "Country",
+                                              hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                              textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                               hintTextColor: Colors.black.withOpacity(0.5),
                                               textColor: kBlackColor,
                                               onChanged: (onChanged){
@@ -145,9 +160,11 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                               sufficIcon: ""),
                                           Container(
                                               margin: EdgeInsets.only(top: 5,bottom: 5),
-                                              child: mediumText("State:", color: kBlackColor,size: 16)),
+                                              child: mediumText("State:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                           RoundedInputField(
                                               hintText: "State",
+                                              textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                              hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                               hintTextColor: Colors.black.withOpacity(0.5),
                                               textColor: kBlackColor,
                                               onChanged: (onChanged){
@@ -161,9 +178,10 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                           SizedBox(height: 20,),
                                           Center(
                                             child: SizedBox(
-                                              width: size.width * 0.3,
+                                              width: size.shortestSide < shortestSideCheck ? size.width * 0.3 : size.width * 0.22,
                                               child: TextButtonWidget(
                                                   text: "Add",
+                                                  textSize: size.shortestSide < shortestSideCheck ? 16 : 22,
                                                   onPress: () async{
                                                     if(!_formKey2.currentState!.validate()){
                                                       return;
@@ -184,6 +202,7 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                         }),
                     TextButtonWidget(
                         text: "Proceed Next",
+                        textSize: size.shortestSide < shortestSideCheck ? 16 : 22,
                         onPress: () async{
                           bool check=await Provider.of<EmployeeApis>(context,listen: false).getEmployeeById(context, provider.loginModel!.token!, provider.companyId!);
                         if(check==true){
@@ -195,7 +214,7 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                   ],
                 ),
                 SizedBox(height: 20,),
-                Center(child: mediumText("Addresses",color: kBlackColor,size: 25)),
+                Center(child: mediumText("Addresses",color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 25 : 35)),
                 ListView.builder(
                   shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -216,15 +235,17 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Center(child: mediumText("Add Location Details",color: kBlackColor,)),
+                                    Center(child: mediumText("Add Location Details",size: size.shortestSide < shortestSideCheck ? 18 : 24,color: kBlackColor,)),
                                     Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
-                                        child: mediumText("Address Line 1:", color: kBlackColor,size: 16)),
+                                        child: mediumText("Address Line 1:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                     RoundedInputField(
                                         hintText: "Address 1",
                                         initialValue: "${provider.locationByIdModel!.locations?[index]!.addressFirst}",
                                         hintTextColor: Colors.black.withOpacity(0.5),
                                         textColor: kBlackColor,
+                                        textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                        hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                         onChanged: (onChanged){
                                           provider.locationData.addess1=onChanged;
                                         },
@@ -238,9 +259,11 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         sufficIcon: ""),
                                     Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
-                                        child: mediumText("Address Line 2:", color: kBlackColor,size: 16)),
+                                        child: mediumText("Address Line 2:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                     RoundedInputField(
                                         hintText: "Address 2",
+                                        hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                        textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                         initialValue: "${provider.locationByIdModel!.locations?[index]!.addressSecond}",
                                         hintTextColor: Colors.black.withOpacity(0.5),
                                         textColor: kBlackColor,
@@ -257,10 +280,12 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         sufficIcon: ""),
                                     Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
-                                        child: mediumText("City:", color: kBlackColor,size: 16)),
+                                        child: mediumText("City:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                     RoundedInputField(
                                       initialValue: "${provider.locationByIdModel!.locations?[index]!.city}",
                                         hintText: "City",
+                                        textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                        hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                         hintTextColor: Colors.black.withOpacity(0.5),
                                         textColor: kBlackColor,
                                         onChanged: (onChanged){
@@ -276,10 +301,12 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         sufficIcon: ""),
                                     Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
-                                        child: mediumText("Zip:", color: kBlackColor,size: 16)),
+                                        child: mediumText("Zip:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                     RoundedInputField(
                                       initialValue: "${provider.locationByIdModel!.locations?[index]!.zip}",
                                         hintText: "Zip",
+                                        hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                        textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                         hintTextColor: Colors.black.withOpacity(0.5),
                                         textColor: kBlackColor,
                                         onChanged: (onChanged){
@@ -295,10 +322,12 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         sufficIcon: ""),
                                     Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
-                                        child: mediumText("Country:", color: kBlackColor,size: 16)),
+                                        child: mediumText("Country:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                     RoundedInputField(
                                       initialValue: "${provider.locationByIdModel!.locations?[index]!.country}",
                                         hintText: "Country",
+                                        textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                        hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                         hintTextColor: Colors.black.withOpacity(0.5),
                                         textColor: kBlackColor,
                                         onChanged: (onChanged){
@@ -314,10 +343,12 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         sufficIcon: ""),
                                     Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
-                                        child: mediumText("State:", color: kBlackColor,size: 16)),
+                                        child: mediumText("State:", color: kBlackColor,size: size.shortestSide < shortestSideCheck ? 16 : 22)),
                                     RoundedInputField(
                                       initialValue: "${provider.locationByIdModel!.locations?[index]!.state}",
                                         hintText: "State",
+                                        hintTextSize: size.shortestSide < shortestSideCheck ? 14 : 20,
+                                        textSize: size.shortestSide < shortestSideCheck ? 14 : 20,
                                         hintTextColor: Colors.black.withOpacity(0.5),
                                         textColor: kBlackColor,
                                         onChanged: (onChanged){
@@ -338,6 +369,7 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                                         width: size.width * 0.3,
                                         child: TextButtonWidget(
                                             text: "Add",
+                                            textSize: size.shortestSide < shortestSideCheck ? 16 : 22,
                                             onPress: () async{
                                               if(!_formKey.currentState!.validate()){
                                                 return;
@@ -397,44 +429,44 @@ class _CompanyLocationDetailsState extends State<CompanyLocationDetails> {
                           ),
                           Row(
                             children: [
-                              mediumText("Address 1: ",color: kBlackColor,maxLines: 2,softWrap: false),
+                              mediumText("Address 1: ",size: size.shortestSide < shortestSideCheck ? 18 : 24,color: kBlackColor,maxLines: 2,softWrap: false),
                               Expanded(
-                                  child: mediumText("${provider.locationByIdModel!.locations?[index]!.addressFirst}",color: kBlackColor,maxLines: 2,softWrap: false,fontWeight: FontWeight.normal)),
+                                  child: mediumText("${provider.locationByIdModel!.locations?[index]!.addressFirst}",color: kBlackColor,maxLines: 2,softWrap: false,fontWeight: FontWeight.normal,size: size.shortestSide < shortestSideCheck ? 18 : 24)),
                             ],
                           ),
                           Row(
                             children: [
-                              mediumText("Address 2: ",color: kBlackColor,maxLines: 2,softWrap: false),
+                              mediumText("Address 2: ",color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               Expanded(
                                   child:
-                                  mediumText("${provider.locationByIdModel!.locations?[index]!.addressSecond}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false),
+                                  mediumText("${provider.locationByIdModel!.locations?[index]!.addressSecond}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              mediumText("City: ",color: kBlackColor,maxLines: 2,softWrap: false),
+                              mediumText("City: ",color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               Expanded(
                                 child:
-                                mediumText("${provider.locationByIdModel!.locations?[index]!.city}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false),
+                                mediumText("${provider.locationByIdModel!.locations?[index]!.city}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              mediumText("Country: ",color: kBlackColor,maxLines: 2,softWrap: false),
+                              mediumText("Country: ",color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               Expanded(
                                 child:
-                                mediumText("${provider.locationByIdModel!.locations?[index]!.country}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false),
+                                mediumText("${provider.locationByIdModel!.locations?[index]!.country}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              mediumText("State: ",color: kBlackColor,maxLines: 2,softWrap: false),
+                              mediumText("State: ",color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               Expanded(
                                 child:
-                                mediumText("${provider.locationByIdModel!.locations?[index]!.state}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false),
+                                mediumText("${provider.locationByIdModel!.locations?[index]!.state}",fontWeight: FontWeight.normal,color: kBlackColor,maxLines: 2,softWrap: false,size: size.shortestSide < shortestSideCheck ? 18 : 24),
                               ),
                             ],
                           ),

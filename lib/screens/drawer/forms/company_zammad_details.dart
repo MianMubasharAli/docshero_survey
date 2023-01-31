@@ -1,6 +1,7 @@
 import 'package:docshero/components/models/companies_models/get_employee_by_id_model.dart';
 import 'package:docshero/components/reuseable_widgets/text_button_widget.dart';
-import 'package:docshero/screens/home_screen.dart';
+import 'package:docshero/screens/dashboard_screen.dart';
+import 'package:docshero/screens/survey_screen.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +76,7 @@ class _CompanyZammadDetailsState extends State<CompanyZammadDetails> {
               ),
               SizedBox(height: 20,),
               TextButtonWidget(text: "Finish",onPress: (){
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomeScreen()), (route) => false);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()), (route) => false);
               },)
             ],
           ),

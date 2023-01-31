@@ -3,12 +3,13 @@ import 'package:docshero/components/providers/data_provilder.dart';
 import 'package:docshero/components/providers/docshero_apis_provider.dart';
 import 'package:docshero/components/providers/employee_apis.dart';
 import 'package:docshero/components/providers/location_apis.dart';
-import 'package:docshero/screens/home_screen.dart';
+import 'package:docshero/screens/survey_screen.dart';
 import 'package:docshero/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'components/providers/api_data_provider.dart';
+import 'components/utils/navigator_key.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,10 @@ class MyApp extends StatelessWidget {
       title: 'DocsHero Surey',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity
       ),
+      navigatorKey: NavigatorKeyClass.navigatorKey,
+
       home: SplashScreen(),
     );
   }
