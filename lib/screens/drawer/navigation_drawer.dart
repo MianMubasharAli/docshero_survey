@@ -2,6 +2,9 @@ import 'package:docshero/components/constants.dart';
 import 'package:docshero/components/providers/api_data_provider.dart';
 import 'package:docshero/components/providers/contact_report_apis.dart';
 import 'package:docshero/components/providers/data_provilder.dart';
+import 'package:docshero/components/providers/supplier_apis.dart';
+import 'package:docshero/screens/drawer/self_service/self_service_home.dart';
+import 'package:docshero/screens/drawer/suppliers/suppliers_home.dart';
 import 'package:docshero/screens/drawer/user_profile.dart';
 import 'package:docshero/screens/survey_screen.dart';
 import 'package:docshero/screens/login_screen.dart';
@@ -86,7 +89,7 @@ class NavigationDrawer extends StatelessWidget {
           children: [
             ListTile(
               leading: Icon(Icons.person_add_alt_outlined,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
-              title: Text("Companies",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
+              title: Text("Customers",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
               onTap: () async{
                 await provider.setCheckForDialog(true);
                 await Provider.of<ApiDataProvider>(context,listen: false).getAllCompanies(context,provider.loginModel!.token! );
@@ -95,9 +98,17 @@ class NavigationDrawer extends StatelessWidget {
             ),
             SizedBox(height: size.shortestSide < shortestSideCheck ? 0 :10,),
             ListTile(
-              leading: Icon(Icons.person,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
-              title: Text("Customers",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
-              onTap: (){},
+              leading: Icon(Icons.group,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
+              title: Text("Suppliers",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
+              onTap: () async{
+                Get.dialog(CustomLoader());
+                bool check= await Provider.of<SupplierApis>(context,listen: false).getAllSuppliers(context, provider.loginModel!.token!);
+                Get.back();
+                if(check==true){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SuppliersHome()));
+                }
+
+              },
             ),
             SizedBox(height: size.shortestSide < shortestSideCheck ? 0 : 10,),
             ListTile(
@@ -109,6 +120,7 @@ class NavigationDrawer extends StatelessWidget {
                 await provider.setCheckForDialog(false);
                 },
             ),
+
             SizedBox(height: size.shortestSide < shortestSideCheck ? 0 :10,),
             ListTile(
               leading: Icon(Icons.edit_note,color: kWhiteColor, size: size.shortestSide < shortestSideCheck ? 24 : 60,),
@@ -122,6 +134,14 @@ class NavigationDrawer extends StatelessWidget {
                   }
                 });
 
+              },
+            ),
+            SizedBox(height: size.shortestSide < shortestSideCheck ? 0 :10,),
+            ListTile(
+              leading: Icon(Icons.groups,color: kWhiteColor,size: size.shortestSide < shortestSideCheck ? 24 : 50),
+              title: Text("Self Service",style: TextStyle(color: kWhiteColor,fontSize: size.shortestSide < shortestSideCheck ? 16 : 25),),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> SelfServiceHome()));
               },
             ),
           ],

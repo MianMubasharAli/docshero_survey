@@ -46,7 +46,7 @@ class _StepsState extends State<Steps> {
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 5,right: 5,top: size.height * 0.02,bottom: size.height * 0.02),
                             decoration: BoxDecoration(
-                              color: consumer.questionsIndex==index? kOrangeColor : kBlueColor,
+                              color: consumer.questionsIndex==index? kOrangeColor : consumer.surveyModel?.steps?[index].value?.isVisited == true ? kGreenColor : kBlueColor,
                               borderRadius: BorderRadius.circular(10)
                             ),
                             child: largerText("${consumer.surveyModel?.steps?[index].value?.title}",size: size.shortestSide < 550 ? 20 : 30),
@@ -113,7 +113,10 @@ class _StepsState extends State<Steps> {
                                     // color: kOrangeColor,
                                     margin: EdgeInsets.only(top: 1,bottom: 1,left: 5,right: 5),
                                     decoration: BoxDecoration(
-                                      color: consumer.chaptersQuestionsIndex==index2 && consumer.questionsIndex == index? kOrangeColor : kBlueColor,
+                                      color:
+
+                                      consumer.chaptersQuestionsIndex==index2 && consumer.questionsIndex == index? kOrangeColor
+                                          : consumer.surveyModel?.steps?[index].value?.questions?[index2].value?.isVisited == true ?  kGreenColor : kBlueColor,
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(color: kBlackColor)
                                     ),
@@ -126,7 +129,7 @@ class _StepsState extends State<Steps> {
                                         consumer.setQuestionIndex(index);
                                         DefaultTabController.of(context)?.animateTo(1);
                                       },
-                                      title: Text("${consumer.surveyModel?.steps?[index].value?.questions?[index2].title}",textAlign: TextAlign.center,style: TextStyle(
+                                      title: Text("${consumer.surveyModel?.steps?[index].value?.questions?[index2].value?.title}",textAlign: TextAlign.center,style: TextStyle(
                                         fontSize: size.shortestSide < shortestSideCheck ? 20 : 30,
                                         color: kWhiteColor
                                       ),),

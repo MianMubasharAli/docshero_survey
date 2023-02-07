@@ -60,7 +60,7 @@ class _TypeNumberState extends State<TypeNumber> {
                       ) :
                       SizedBox(
                         width: size.width * 0.4,
-                        child: mediumText("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].title}",
+                        child: mediumText("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].title}",
                             color: kBlackColor,
                             maxLines: 3,
                             size:  size.shortestSide < 550 ? 20 : 35,
@@ -78,18 +78,14 @@ class _TypeNumberState extends State<TypeNumber> {
                 ),
                 child: Row(
                   children: [
-                    Consumer<DataProvider>(
-                      builder: (context,data,snap) {
+                    Builder(
+                      builder: (context) {
+                        DataProvider data=Provider.of<DataProvider>(context,listen: true);
 
-                        if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
-                          provider.optionSelected(data,provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!,widget.index);
-                        }else{
-                          provider.optionSelected(data,provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!,widget.index);
-                        }
 
-                        WidgetsBinding.instance.addPostFrameCallback((_){
-                          provider.setCheckValue(onChanedId);
-                        });
+                        // WidgetsBinding.instance.addPostFrameCallback((_){
+                        //   provider.setCheckValue(onChanedId);
+                        // });
 
 
                         return Flexible(
@@ -99,9 +95,15 @@ class _TypeNumberState extends State<TypeNumber> {
                             controller:
                             provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
                             TextEditingController(text: "${
-                                provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].value}")
+                                provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].value == ""
+                                ? "0" :  provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].value
+                            }")
                                 :
-                            TextEditingController(text: "${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].value}"),
+                            TextEditingController(text: "${
+                                provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].value == ""
+                                ? "0" : provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].value
+
+                            }"),
                             style: TextStyle(
                                 color: kBlackColor,
                                 fontSize: size.width * 0.05
@@ -121,7 +123,7 @@ class _TypeNumberState extends State<TypeNumber> {
                                 if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
                                   provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].value=int.parse(onChanged);
                                 }else{
-                                  provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].value=int.parse(onChanged);
+                                  provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].value=int.parse(onChanged);
                                 }
                               }
                             },
@@ -130,7 +132,7 @@ class _TypeNumberState extends State<TypeNumber> {
                                 if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
                                   provider.surveyModel?.steps?[provider.questionsIndex].value?.configuration?.options?[widget.index].value=int.parse(onSaved);
                                 }else{
-                                  provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].value=int.parse(onSaved);
+                                  provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].value=int.parse(onSaved);
                                 }                                }
                             },
                           ),
@@ -141,11 +143,11 @@ class _TypeNumberState extends State<TypeNumber> {
                       if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
                         if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString()) > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].min.toString())){
 
-                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].uuid}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
 
-                          setState(() {
+                          // setState(() {
                             provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value=(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value! - int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()));
-                          });
+                          // });
 
                           // if(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value != 0){
                           //   localProductListIds=new Set();
@@ -377,15 +379,15 @@ class _TypeNumberState extends State<TypeNumber> {
                         }
                       }
                       else{
-                        if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString())
-                            > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].min.toString())){
+                        if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value.toString())
+                            > int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].min.toString())){
 
-                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value;
-                          setState(() {
-                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
-                            =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
-                                - int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()));
-                          });
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].uuid}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value;
+                          // setState(() {
+                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value
+                            =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value!
+                                - int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].step.toString()));
+                          // });
 
                           // if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value != 0){
                           //   localProductListIds=new Set();
@@ -618,9 +620,17 @@ class _TypeNumberState extends State<TypeNumber> {
                           // });
                         }
                       }
-                      // setState(() {
-                      //   provider.setCheckValue(onChanedId);
-                      // });
+                      if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
+                        provider.optionSelected(provider,provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!,widget.index);
+                        provider.surveyModel!.steps![provider.questionsIndex].value!.isVisited=true;
+                      }else{
+                        provider.optionSelected(provider,provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!,widget.index);
+                        provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.isVisited=true;
+                      }
+
+                      setState(() {
+                        provider.setCheckValue(onChanedId);
+                      });
 
                     },
                         icon: Icon(Icons.remove,color: kGreenColor,size: size.width * 0.07,),
@@ -628,7 +638,11 @@ class _TypeNumberState extends State<TypeNumber> {
                         padding: size.shortestSide < 550 ? EdgeInsets.only() :EdgeInsets.only(right: 30,),),
                     IconButton(onPressed: (){
                       if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
-                        if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString()) < int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].max.toString())){
+                        if(
+                        int.parse(
+                            provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value == "" ? "0" :
+                            provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value.toString()) <
+                            int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].max.toString())){
 
 
                           // if(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value == 0){
@@ -718,10 +732,14 @@ class _TypeNumberState extends State<TypeNumber> {
                           //   });
                           // }
 
-                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
-                            setState(() {
-                              provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value=(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value! + int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()));
-                            });
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].uuid}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
+                            // setState(() {
+                              provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value =
+                              (
+                                  provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value! == "" ? 0 :
+                                  provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value!
+                                      + int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()));
+                            // });
 
 
 
@@ -920,8 +938,12 @@ class _TypeNumberState extends State<TypeNumber> {
                         }
                       }
                       else{
-                        if(int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value.toString())
-                            < int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].max.toString())){
+                        if(
+                        int.parse(
+                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value.toString() == ""
+                            ? "0" :  provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value.toString()
+                        )
+                            < int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].max.toString())){
 
 
                           // if(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value == 0){
@@ -986,12 +1008,14 @@ class _TypeNumberState extends State<TypeNumber> {
                           //
                           // }
 
-                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].id}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value;
-                          setState(() {
-                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value
-                            =(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value!
-                                + int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()));
-                          });
+                          provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].uuid}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value;
+                          // setState(() {
+                            provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value
+                            =(
+                                provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value! == ""
+                                ? 0 : provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value!
+                                + int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].step.toString()));
+                          // });
 
                           // provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.conditionsForProductSelection?.forEach((element) {
                           //   String? discount=element.discount;
@@ -1163,13 +1187,21 @@ class _TypeNumberState extends State<TypeNumber> {
 
                         }
                       }
-                      // setState(() {
-                      //   provider.setCheckValue(onChanedId);
-                      // });
+                      if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
+                        provider.optionSelected(provider,provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!,widget.index);
+                        provider.surveyModel!.steps![provider.questionsIndex].value!.isVisited=true;
+                      }else{
+                        provider.optionSelected(provider,provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!,widget.index);
+                        provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.isVisited=true;
+
+                      }
+                      setState(() {
+                        provider.setCheckValue(onChanedId);
+                      });
                     },
                       icon: Icon(Icons.add,color: kGreenColor,size: size.width * 0.07),
-                      constraints: size.shortestSide < 550 ? BoxConstraints() : BoxConstraints(minHeight: 48,minWidth: 48),
-                      padding: size.shortestSide < 550 ? EdgeInsets.only() :EdgeInsets.only(right: 30,left: 30),),
+                      constraints: size.shortestSide < shortestSideCheck ? BoxConstraints() : BoxConstraints(minHeight: 48,minWidth: 48),
+                      padding: size.shortestSide < shortestSideCheck ? EdgeInsets.only() :EdgeInsets.only(right: 30,left: 30),),
                   ],
                 ),
               ),

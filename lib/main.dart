@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'components/providers/api_data_provider.dart';
+import 'components/providers/supplier_apis.dart';
 import 'components/utils/navigator_key.dart';
 
 void main() async{
@@ -19,7 +20,8 @@ void main() async{
     ChangeNotifierProvider(create: (context) => LocationApis()),
     ChangeNotifierProvider(create: (context)=> EmployeeApis()),
     ChangeNotifierProvider(create: (context) => ContactReportApis()),
-    ChangeNotifierProvider(create: (context) => DocsheroApisProvider())
+    ChangeNotifierProvider(create: (context) => DocsheroApisProvider()),
+    ChangeNotifierProvider(create: (context) => SupplierApis())
   ],
     child: MyApp(),));
 }

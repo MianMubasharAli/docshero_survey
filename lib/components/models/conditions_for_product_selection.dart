@@ -12,7 +12,7 @@ class ConditionsForProductSelection {
     this.next,
   });
 
-  String? id;
+  dynamic? id;
   String? discount;
   List<OptionProduct2>? products;
   List<ConditionsForProductSelectionOption>? options;

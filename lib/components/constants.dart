@@ -23,6 +23,8 @@ Text textWithoutLines(String text,{Color color=kWhiteColor,double size=18,FontWe
   return Text(text,style: TextStyle(color: color,fontSize: size,fontWeight: fontWeight));
 }
 
+const IconData person_3 = IconData(0xf47b);
+
 
 String BASE_URL="https://h2972847.stratoserver.net/o/public/index.php/";
 String DOCSHERO_BASE_URL="http://admin.docshero.de/api/";

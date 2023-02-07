@@ -5,6 +5,9 @@ import 'configuration2_model.dart';
 class ValueElement2 {
   ValueElement2({
     this.id,
+    this.type,
+    this.value,
+    this.isVisited=false,
     this.title,
     this.text,
     this.description,
@@ -17,6 +20,9 @@ class ValueElement2 {
   });
 
   var id;
+  String? type;
+  ValueElement2? value;
+  bool isVisited;
   String? title;
   String? text;
   String? description;
@@ -25,19 +31,22 @@ class ValueElement2 {
   Configuration2? configuration;
   String? next;
   String? back;
-  List<Question>? questions;
+  List<ValueElement2>? questions;
 
   factory ValueElement2.fromJson(Map<String, dynamic> json) => ValueElement2(
     id: json["id"],
+    type: json['type'] ?? null,
+    value: json['value'] == null ? null : ValueElement2.fromJson(json['value']),
+    isVisited: json['isVisited'] ?? false,
     title: json["title"],
     text: json["text"] == null ? null : json["text"],
     description: json["description"] == null ? null : json["description"],
-    chapter: json["chapter"],
+    chapter: json["chapterName"],
     productDetails: json["productDetails"] == null ? null : json["productDetails"],
     configuration: json["configuration"] == null ? null : Configuration2.fromJson(json["configuration"]),
     next: json["next"] == null ? null : json["next"],
     back: json["back"] == null ? null : json["back"],
-    questions: json["questions"] == null ? null : List<Question>.from(json["questions"].map((x) => Question.fromJson(x))),
+    questions: json["questions"] == null ? null : List<ValueElement2>.from(json["questions"].map((x) => ValueElement2.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

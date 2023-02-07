@@ -41,7 +41,7 @@ class Welcome2 {
     "name": name,
     "steps": List<dynamic>.from(steps!.map((x) => x.toJson())),
     "cart": cart?.toJson(),
-    "stylesConfiguration": stylesConfiguration?.toJson(),
+    // "stylesConfiguration": stylesConfiguration?.toJson(),
   };
 }
 

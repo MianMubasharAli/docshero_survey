@@ -4,6 +4,7 @@ class Option2 {
   Option2({
     this.id,
     this.title,
+    this.uuid,
     this.value,
     this.products,
     this.next,
@@ -14,7 +15,7 @@ class Option2 {
     this.isSelected=false
   });
 
-  String? id;
+  dynamic id;
   String? title;
   dynamic? value;
   List<OptionProduct2>? products;
@@ -24,11 +25,13 @@ class Option2 {
   dynamic? step;
   String? placeholder;
   bool isSelected;
+  String? uuid;
 
   factory Option2.fromJson(Map<String, dynamic> json) => Option2(
       id: json["id"],
       title: json["title"],
-      value: json["value"],
+      uuid: json['uuid'],
+      value: json["value"] == "" ? 0 : json['value'],
       products: List<OptionProduct2>.from(json["products"].map((x) => OptionProduct2.fromJson(x))),
       next: json["next"],
       min: json["min"],
@@ -41,6 +44,7 @@ class Option2 {
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title,
+    "uuid" : uuid,
     "value": value,
     "products": List<dynamic>.from(products!.map((x) => x.toJson())),
     "next": next,

@@ -48,7 +48,7 @@ class _TypeSliderState extends State<TypeSlider> {
                 ) :
                 SizedBox(
                   width: size.width * 0.25,
-                  child: mediumText("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].title}",
+                  child: mediumText("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].title}",
                       color: kBlackColor,
                       maxLines: 3,
                       softWrap: false,
@@ -60,35 +60,44 @@ class _TypeSliderState extends State<TypeSlider> {
                 child: SfSlider(
                   min: provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
                           provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].min :
-                          provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].min,
+                          provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].min,
                   max: provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
                           int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].max.toString()) :
-                          int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].max.toString()),
+                          int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].max.toString()),
                   value: provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
-                          provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value :
-                          provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?[widget.index].value,
+                          (
+                              provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value == ""
+                              ? 0 : provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value
+                          ) :
+                          (
+                              provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].value == ""
+                              ? 0 : provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?[widget.index].value
+
+                          ),
                   interval:
                   provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
                   (int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].max.toString())
                       /
                   int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()))
                   :
-                  (int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].max.toString())
+                  (int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].max.toString())
                       /
-                  int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString())),
+                  int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].step.toString())),
                   showTicks: false,
                   showLabels: false,
                   enableTooltip: true,
                   stepSize: provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
                         double.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()) :
-                        double.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()),
+                        double.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].step.toString()),
 
                   minorTicksPerInterval: provider.surveyModel!.steps![provider.questionsIndex].type == "question" ?
                   int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].step.toString()) :
-                  int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].step.toString()),
+                  int.parse(provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].step.toString()),
                   onChanged: (dynamic value){
                     // valueForCheck=value;
                     if(provider.surveyModel!.steps![provider.questionsIndex].type == "question"){
+                      provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].uuid}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value;
+
                       provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!.options![widget.index].value=value;
                       // if(value <= 0 && check==1){
                       //   localProductListIds=new Set();
@@ -426,9 +435,12 @@ class _TypeSliderState extends State<TypeSlider> {
                       // });
                       // }
                       provider.optionSelected(provider, provider.surveyModel!.steps![provider.questionsIndex].value!.configuration!, widget.index);
+                      provider.surveyModel!.steps![provider.questionsIndex].value!.isVisited=true;
                     }
                     else{
-                      provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!.options![widget.index].value=value;
+                      provider.previousValueMap["${provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].uuid}"] = provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value;
+
+                      provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!.options![widget.index].value=value;
                       // if(value <= 0 && check==1){
                       //   localProductList=new Set();
                       //   localProductListIds=new Set();
@@ -722,7 +734,8 @@ class _TypeSliderState extends State<TypeSlider> {
                       //     // });
                       //   });
                       // }
-                      provider.optionSelected(provider, provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].configuration2!, widget.index);
+                      provider.optionSelected(provider, provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.configuration!, widget.index);
+                      provider.surveyModel!.steps![provider.questionsIndex].value!.questions![provider.chaptersQuestionsIndex].value!.isVisited=true;
                     }
 
                       setState((){
@@ -731,8 +744,8 @@ class _TypeSliderState extends State<TypeSlider> {
 
                   },
                   onChangeEnd: (onChangeEnd){
-                   isAdded=false;
-                   valueForCheck=onChangeEnd;
+                   // isAdded=false;
+                   // valueForCheck=onChangeEnd;
                   },
                 ),
               ),

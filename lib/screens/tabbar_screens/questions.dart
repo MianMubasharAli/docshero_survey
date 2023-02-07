@@ -103,28 +103,28 @@ class _QuestionsState extends State<Questions> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].title}",color: kBlackColor,fontWeight: FontWeight.bold,size: size.shortestSide < 550 ? 20 : 35),
-                            textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].description}",
-                                fontWeight: FontWeight.normal,color: kBlackColor, size: size.shortestSide < 550 ? 20 : 35),
+                            textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.title}",color: kBlackColor,fontWeight: FontWeight.bold,size: size.shortestSide < shortestSideCheck ? 20 : 35),
+                            textWithoutLines("${provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.description}",
+                                fontWeight: FontWeight.normal,color: kBlackColor, size: size.shortestSide < shortestSideCheck ? 20 : 35),
 
                             ListView.builder(
                                 shrinkWrap:true,
-                                itemCount: provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.options?.length,
+                                itemCount: provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.options?.length,
                                 itemBuilder: (context, index) {
                                   return
-                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.type == "single"
+                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.type == "single"
                                         ?
                                     TypeSingle(index: index)
                                         :
-                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.type == "multi"
+                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.type == "multi"
                                         ?
                                     TypeMulti(index: index)
                                         :
-                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.type == "slider"
+                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.type == "slider"
                                         ?
                                     TypeSlider(index: index,)
                                         :
-                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].configuration2?.type == "text"
+                                    provider.surveyModel?.steps?[provider.questionsIndex].value?.questions?[provider.chaptersQuestionsIndex].value?.configuration?.type == "text"
                                         ?
                                     TypeText(index: index)
                                         :

@@ -80,6 +80,7 @@ flutter:
     - assets/files/surveyJson.js
     - assets/files/surveyJson2.js
     - assets/files/surveyJson3.js
+    - assets/files/surveyJson4.js
     - assets/images/
   #   - images/a_dot_ham.jpeg
 
